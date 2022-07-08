@@ -1,0 +1,7 @@
+name: SimplexSS
+version: '${version}'
+main: io.github.simplex.simplexss.SimplexSS
+api-version: 1.19
+authors: [ SimplexDevelopment ]
+description: A Scheduler Service API written with Reactor designed to create fully reactive non-blocking tasks.
+website: https://github.com/SimplexDevelopment
