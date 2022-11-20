@@ -35,24 +35,11 @@ public final class SchedulingSystem implements Scheduler {
     }
 
     @Override
-    public Mono<Void> queue(Service service) {
-        getServiceManager().doOnNext(m -> {
-            Mono<ServicePool> pool = Mono.justOrEmpty(m.getAssociatedServicePool(service));
-            pool.defaultIfEmpty(m.createServicePool(service))
-                    .map(p -> p.getService(service.getServiceID()))
-                    .doOnNext(s -> {
-                        if (s.getServicePool().isPoolDelayed()) {
-                            getDelayedPools().add(s.getServicePool());
-                        }
-                        if (s.getServicePool().isPoolRepeating()) {
-                            getRepeatingPools().add(s.getServicePool());
-                        }
-                        else {
-                            runOnce(s).block();
-                        }
-                    });
+    public Mono<ServicePool> queue(Service service) {
+        return getServiceManager().flatMap(serviceManager -> {
+            Mono<ServicePool> pool = Mono.justOrEmpty(serviceManager.getAssociatedServicePool(service));
+            return pool.defaultIfEmpty(serviceManager.createServicePool(service));
         });
-        return Mono.empty();
     }
 
     @Override

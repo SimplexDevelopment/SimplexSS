@@ -6,7 +6,7 @@ public abstract class ExecutableService implements Service {
     private final int serviceID;
     private final Plugin plugin;
 
-    public ExecutableService(Plugin plugin, int serviceID) {
+    public ExecutableService(Plugin plugin, int serviceID, long delay, long period, boolean delayed, boolean repeating) {
         this.serviceID = serviceID;
         this.plugin = plugin;
     }

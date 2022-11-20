@@ -1,12 +1,13 @@
 package io.github.simplex.api;
 
 import io.github.simplex.simplexss.ServiceManager;
+import io.github.simplex.simplexss.ServicePool;
 import reactor.core.publisher.Mono;
 
 public interface Scheduler {
     Mono<ServiceManager> getServiceManager();
 
-    Mono<Void> queue(Service service);
+    Mono<ServicePool> queue(Service service);
 
     Mono<Void> runOnce(Service service);
 

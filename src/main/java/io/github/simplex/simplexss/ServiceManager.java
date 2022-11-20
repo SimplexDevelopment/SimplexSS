@@ -49,7 +49,7 @@ public final class ServiceManager {
     public @Nullable ServicePool getAssociatedServicePool(Service service) {
         if (!locateServiceWithinPools(service)) return null;
 
-        return servicePools
+        return getServicePools()
                 .stream()
                 .filter(p -> p.getAssociatedServices().contains(service))
                 .findFirst()
