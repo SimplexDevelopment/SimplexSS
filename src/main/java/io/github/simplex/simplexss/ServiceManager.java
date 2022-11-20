@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -22,24 +23,36 @@ public final class ServiceManager {
 
     @Contract(pure = true, value = "_ -> new")
     public @NotNull Mono<ServicePool> createServicePool(IService... services) {
-        ServicePool pool = new ServicePool();
+        ServicePool pool = new ServicePool(false);
         Stream.of(services).forEach(pool::addService);
         return Mono.just(pool);
     }
 
-    @Contract("_, _ -> param1")
-    public Mono<ServicePool> addToExistingPool(@NotNull ServicePool pool, IService... services) {
-        Stream.of(services).forEach(pool::addService);
+    public @NotNull Mono<ServicePool> multithreadedServicePool(IService... services) {
+        ServicePool pool = new ServicePool(true);
+        Flux.fromIterable(Arrays.asList(services)).doOnEach(s -> {
+            pool.addService(s.get());
+        });
         return Mono.just(pool);
     }
 
     @Contract("_, _ -> param1")
-    public Mono<ServicePool> takeFromExistingPool(@NotNull ServicePool pool, IService... services) {
-        Stream.of(services).forEach(pool::removeService);
+    public @NotNull Mono<ServicePool> addToExistingPool(@NotNull ServicePool pool, IService... services) {
+        Flux.fromIterable(Arrays.asList(services)).doOnEach(s -> {
+            pool.addService(s.get());
+        });
         return Mono.just(pool);
     }
 
-    public Flux<ServicePool> getServicePools() {
+    @Contract("_, _ -> param1")
+    public @NotNull Mono<ServicePool> takeFromExistingPool(@NotNull ServicePool pool, IService... services) {
+        Flux.fromIterable(Arrays.asList(services)).doOnEach(s -> {
+            pool.removeService(s.get());
+        });
+        return Mono.just(pool);
+    }
+
+    public @NotNull Flux<ServicePool> getServicePools() {
         return Flux.fromIterable(servicePools);
     }
 

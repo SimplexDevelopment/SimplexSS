@@ -17,12 +17,14 @@ import java.util.concurrent.TimeUnit;
 public final class ServicePool {
     private final Set<IService> associatedServices;
     private final Scheduler scheduler;
-    private final ExecutorService executor;
 
-    public ServicePool() {
+    public ServicePool(boolean multithreaded) {
         this.associatedServices = new HashSet<>();
-        this.executor = Executors.newSingleThreadExecutor();
-        this.scheduler = Schedulers.fromExecutorService(executor);
+        if (multithreaded) {
+            this.scheduler = Schedulers.fromExecutorService(Executors.newFixedThreadPool(4));
+        } else {
+            this.scheduler = Schedulers.fromExecutorService(Executors.newSingleThreadExecutor());
+        }
     }
 
     void addService(IService service) {
@@ -38,6 +40,22 @@ public final class ServicePool {
         return associatedServices;
     }
 
+    public Mono<Disposable> startService(int serviceID) {
+        Mono<IService> service = getService(serviceID);
+        return service.map(s -> {
+            if (s.isRepeating()) {
+                return scheduler.schedulePeriodically(s,
+                        s.getDelay() * 5,
+                        s.getPeriod() * 5,
+                        TimeUnit.MILLISECONDS);
+            }
+            return scheduler.schedule(s,
+                    s.getDelay() * 5,
+                    TimeUnit.MILLISECONDS);
+
+        });
+    }
+
     public Flux<Disposable> startServices() {
         return Mono.just(getAssociatedServices()).flatMapMany(services -> {
             Set<Disposable> disposables = new HashSet<>();
@@ -46,10 +64,6 @@ public final class ServicePool {
                     disposables.add(scheduler.schedulePeriodically(service,
                             service.getDelay() * 5,
                             service.getPeriod() * 5,
-                            TimeUnit.MILLISECONDS));
-                } else if (service.isDelayed()) {
-                    disposables.add(scheduler.schedule(service,
-                            service.getDelay() * 5,
                             TimeUnit.MILLISECONDS));
                 } else {
                     disposables.add(scheduler.schedule(service));
@@ -61,11 +75,11 @@ public final class ServicePool {
     }
 
     public Mono<Void> stopServices(Flux<Disposable> disposableThread) {
-        return Mono.just(getAssociatedServices()).doOnNext(services -> {
-            for (IService service : services) {
-                disposableThread.doOnNext(Disposable::dispose);
-            }
-        }).then();
+        return disposableThread.doOnNext(Disposable::dispose).then();
+    }
+
+    public Mono<Void> stopService(int serviceID) {
+        return getService(serviceID).doOnNext(IService::stop).then();
     }
 
     public Mono<IService> getService(int serviceID) {
@@ -78,8 +92,8 @@ public final class ServicePool {
         getAssociatedServices().remove(service);
     }
 
-    public ServicePool recycle() {
+    public Mono<ServicePool> recycle() {
         this.getAssociatedServices().clear();
-        return this;
+        return Mono.just(this);
     }
 }

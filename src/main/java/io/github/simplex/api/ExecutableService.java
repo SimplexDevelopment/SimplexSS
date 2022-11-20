@@ -7,16 +7,14 @@ public abstract class ExecutableService implements IService {
     private final Plugin plugin;
     private final long delay;
     private final long period;
-    private final boolean delayed;
     private final boolean repeating;
 
-    public ExecutableService(Plugin plugin, int serviceID, long delay, long period, boolean delayed, boolean repeating) {
+    public ExecutableService(Plugin plugin, int serviceID, long delay, long period, boolean repeating) {
         this.plugin = plugin;
         this.serviceID = serviceID;
         this.repeating = repeating;
         this.delay = delay;
         this.period = period;
-        this.delayed = delayed;
     }
 
     @Override
@@ -37,11 +35,6 @@ public abstract class ExecutableService implements IService {
     @Override
     public long getPeriod() {
         return period;
-    }
-
-    @Override
-    public boolean isDelayed() {
-        return delayed;
     }
 
     @Override

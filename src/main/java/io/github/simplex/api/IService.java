@@ -8,8 +8,6 @@ import java.util.concurrent.RunnableScheduledFuture;
 public interface IService extends RunnableScheduledFuture<IService> {
     int getServiceID();
 
-    boolean isDelayed();
-
     boolean isRepeating();
 
     long getPeriod();
