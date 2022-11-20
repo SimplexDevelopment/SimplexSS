@@ -4,14 +4,14 @@ import io.github.simplex.simplexss.ServiceManager;
 import io.github.simplex.simplexss.ServicePool;
 import reactor.core.publisher.Mono;
 
-public interface Scheduler {
+public interface ISchedule {
     Mono<ServiceManager> getServiceManager();
 
-    Mono<ServicePool> queue(Service service);
+    Mono<ServicePool> queue(IService service);
 
-    Mono<Void> runOnce(Service service);
+    Mono<Void> runOnce(IService service);
 
-    Mono<Void> forceStop(Service service);
+    Mono<Void> forceStop(IService service);
 
-    Mono<Void> forceStart(Service service);
+    Mono<Void> forceStart(IService service);
 }

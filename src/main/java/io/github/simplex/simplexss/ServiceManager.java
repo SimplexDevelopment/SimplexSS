@@ -1,10 +1,11 @@
 package io.github.simplex.simplexss;
 
-import io.github.simplex.api.Service;
+import io.github.simplex.api.IService;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,49 +14,46 @@ import java.util.stream.Stream;
 public final class ServiceManager {
     private final Set<ServicePool> servicePools;
     private final Plugin plugin;
-    
+
     public ServiceManager(Plugin plugin) {
         this.plugin = plugin;
         servicePools = new HashSet<>();
     }
-    
+
     @Contract(pure = true, value = "_ -> new")
-    public @NotNull ServicePool createServicePool(Service... services) {
+    public @NotNull Mono<ServicePool> createServicePool(IService... services) {
         ServicePool pool = new ServicePool();
         Stream.of(services).forEach(pool::addService);
-        return pool;
-    }
-    
-    @Contract("_, _ -> param1")
-    public ServicePool addToExistingPool(@NotNull ServicePool pool, Service... services) {
-        Stream.of(services).forEach(pool::addService);
-        return pool;
-    }
-    
-    @Contract("_, _ -> param1")
-    public ServicePool takeFromExistingPool(@NotNull ServicePool pool, Service... services) {
-        Stream.of(services).forEach(pool::removeService);
-        return pool;
-    }
-    
-    public Set<ServicePool> getServicePools() {
-        return servicePools;
+        return Mono.just(pool);
     }
 
-    public boolean locateServiceWithinPools(Service service) {
+    @Contract("_, _ -> param1")
+    public Mono<ServicePool> addToExistingPool(@NotNull ServicePool pool, IService... services) {
+        Stream.of(services).forEach(pool::addService);
+        return Mono.just(pool);
+    }
+
+    @Contract("_, _ -> param1")
+    public Mono<ServicePool> takeFromExistingPool(@NotNull ServicePool pool, IService... services) {
+        Stream.of(services).forEach(pool::removeService);
+        return Mono.just(pool);
+    }
+
+    public Flux<ServicePool> getServicePools() {
+        return Flux.fromIterable(servicePools);
+    }
+
+    public boolean locateServiceWithinPools(IService service) {
         return servicePools.stream().map(p -> p.isValidService(service)).findFirst().orElseGet(() -> false);
     }
 
-    public @Nullable ServicePool getAssociatedServicePool(Service service) {
-        if (!locateServiceWithinPools(service)) return null;
-
+    public @NotNull Mono<ServicePool> getAssociatedServicePool(IService service) {
+        if (!locateServiceWithinPools(service)) return Mono.empty();
         return getServicePools()
-                .stream()
                 .filter(p -> p.getAssociatedServices().contains(service))
-                .findFirst()
-                .orElseGet(() -> null);
+                .next();
     }
-    
+
     public Plugin getProvidingPlugin() {
         return plugin;
     }

@@ -1,12 +1,11 @@
 package io.github.simplex.api;
 
-import io.github.simplex.simplexss.ServicePool;
 import org.bukkit.plugin.Plugin;
 import reactor.core.publisher.Mono;
 
 import java.util.concurrent.RunnableScheduledFuture;
 
-public interface Service extends RunnableScheduledFuture<Service> {
+public interface IService extends RunnableScheduledFuture<IService> {
     int getServiceID();
 
     boolean isDelayed();

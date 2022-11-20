@@ -1,7 +1,9 @@
 package io.github.simplex.simplexss;
 
-import io.github.simplex.api.Service;
+import io.github.simplex.api.IService;
 import org.jetbrains.annotations.NotNull;
+import reactor.core.Disposable;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
@@ -13,11 +15,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public final class ServicePool {
-    private final Set<Service> associatedServices;
+    private final Set<IService> associatedServices;
     private final Scheduler scheduler;
     private final ExecutorService executor;
-    private boolean delayed = false;
-    private boolean repeating = false;
 
     public ServicePool() {
         this.associatedServices = new HashSet<>();
@@ -25,55 +25,61 @@ public final class ServicePool {
         this.scheduler = Schedulers.fromExecutorService(executor);
     }
 
-    void addService(Service service) {
+    void addService(IService service) {
         getAssociatedServices().add(service);
     }
 
-    boolean isValidService(Service service) {
+    boolean isValidService(IService service) {
         return getAssociatedServices().contains(service);
     }
 
     @NotNull
-    public Set<Service> getAssociatedServices() {
+    public Set<IService> getAssociatedServices() {
         return associatedServices;
     }
 
-    public Mono<Void> startServices() {
-        return Mono.just(getAssociatedServices()).doOnNext(services -> {
-            for (Service service : services) {
+    public Flux<Disposable> startServices() {
+        return Mono.just(getAssociatedServices()).flatMapMany(services -> {
+            Set<Disposable> disposables = new HashSet<>();
+            for (IService service : services) {
                 if (service.isRepeating()) {
-                    scheduler.schedulePeriodically(service, service.getDelay() * 5, service.getPeriod() * 5, TimeUnit.MILLISECONDS);
+                    disposables.add(scheduler.schedulePeriodically(service,
+                            service.getDelay() * 5,
+                            service.getPeriod() * 5,
+                            TimeUnit.MILLISECONDS));
                 } else if (service.isDelayed()) {
-                    scheduler.schedule(service, service.getDelay() * 5, TimeUnit.MILLISECONDS);
+                    disposables.add(scheduler.schedule(service,
+                            service.getDelay() * 5,
+                            TimeUnit.MILLISECONDS));
+                } else {
+                    disposables.add(scheduler.schedule(service));
                 }
             }
-        }).then();
+            ;
+            return Flux.fromIterable(disposables);
+        });
     }
 
-    public Mono<Void> stopServices() {
+    public Mono<Void> stopServices(Flux<Disposable> disposableThread) {
         return Mono.just(getAssociatedServices()).doOnNext(services -> {
-            for (Service service : services) {
-                service.stop();
+            for (IService service : services) {
+                disposableThread.doOnNext(Disposable::dispose);
             }
         }).then();
     }
 
-    public Service getService(int serviceID) {
-        return getAssociatedServices()
-                .stream()
-                .filter(s -> s.getServiceID() == serviceID)
-                .findFirst()
-                .orElse(null);
+    public Mono<IService> getService(int serviceID) {
+        return Flux.fromIterable(getAssociatedServices())
+                .filter(service -> service.getServiceID() == serviceID)
+                .next();
     }
 
-    public void removeService(Service service) {
+    void removeService(IService service) {
         getAssociatedServices().remove(service);
     }
 
     public ServicePool recycle() {
         this.getAssociatedServices().clear();
-        this.repeating = false;
-        this.delayed = false;
         return this;
     }
 }

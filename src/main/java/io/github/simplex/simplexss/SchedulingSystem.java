@@ -1,20 +1,22 @@
 package io.github.simplex.simplexss;
 
-import io.github.simplex.api.Scheduler;
-import io.github.simplex.api.Service;
+import io.github.simplex.api.ISchedule;
+import io.github.simplex.api.IService;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 import reactor.core.publisher.Mono;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
-public final class SchedulingSystem implements Scheduler {
+public final class SchedulingSystem implements ISchedule {
     private final ServiceManager serviceManager;
     private final Plugin plugin;
     private final Set<ServicePool> repeatingPools;
     private final Set<ServicePool> delayedPools;
 
-    public SchedulingSystem(ServiceManager serviceManager, Plugin plugin) {
+    public SchedulingSystem(@NotNull ServiceManager serviceManager, Plugin plugin) {
         this.serviceManager = serviceManager;
         this.plugin = plugin;
         this.repeatingPools = new HashSet<>();
@@ -35,27 +37,29 @@ public final class SchedulingSystem implements Scheduler {
     }
 
     @Override
-    public Mono<ServicePool> queue(Service service) {
+    @NotNull
+    public Mono<ServicePool> queue(@NotNull IService service) {
         return getServiceManager().flatMap(serviceManager -> {
-            Mono<ServicePool> pool = Mono.justOrEmpty(serviceManager.getAssociatedServicePool(service));
-            return pool.defaultIfEmpty(serviceManager.createServicePool(service));
+            Mono<ServicePool> pool = serviceManager.getAssociatedServicePool(service);
+            return pool.defaultIfEmpty(Objects.requireNonNull(serviceManager.createServicePool(service).block()));
         });
     }
 
     @Override
-    public Mono<Void> runOnce(Service service) {
-        service.start().block();
-        service.stop().block();
-        return Mono.empty();
+    public Mono<Void> runOnce(IService service) {
+        return Mono.just(service).doOnNext(s -> {
+            s.start();
+            s.stop();
+        }).then();
     }
 
     @Override
-    public Mono<Void> forceStop(Service service) {
+    public Mono<Void> forceStop(IService service) {
         return service.stop();
     }
 
     @Override
-    public Mono<Void> forceStart(Service service) {
+    public Mono<Void> forceStart(IService service) {
         return service.start();
     }
 
