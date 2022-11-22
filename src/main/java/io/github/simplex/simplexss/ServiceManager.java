@@ -1,6 +1,7 @@
 package io.github.simplex.simplexss;
 
 import io.github.simplex.api.IService;
+import org.bukkit.NamespacedKey;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -10,7 +11,6 @@ import reactor.core.publisher.Mono;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Stream;
 
 public final class ServiceManager {
     private final Set<ServicePool> servicePools;
@@ -21,22 +21,27 @@ public final class ServiceManager {
         servicePools = new HashSet<>();
     }
 
-    @Contract(pure = true, value = "_ -> new")
-    public @NotNull Mono<ServicePool> createServicePool(IService... services) {
-        ServicePool pool = new ServicePool(false);
-        Stream.of(services).forEach(pool::addService);
+    @Contract(pure = true, value = "_, _ -> new")
+    public @NotNull Mono<ServicePool> createServicePool(NamespacedKey poolName, IService... services) {
+        ServicePool pool = new ServicePool(poolName, false);
+        Flux.fromIterable(Arrays.asList(services)).doOnEach(s -> pool.addService(s.get()));
         return Mono.just(pool);
     }
 
-    public @NotNull Mono<ServicePool> multithreadedServicePool(IService... services) {
-        ServicePool pool = new ServicePool(true);
-        Flux.fromIterable(Arrays.asList(services)).doOnEach(s -> {
-            pool.addService(s.get());
-        });
+    @Contract(pure = true, value = "_, _ -> new")
+    public @NotNull Mono<ServicePool> multithreadedServicePool(NamespacedKey name, IService... services) {
+        ServicePool pool = new ServicePool(name, true);
+        Flux.fromIterable(Arrays.asList(services)).doOnEach(s -> pool.addService(s.get()));
         return Mono.just(pool);
     }
 
-    @Contract("_, _ -> param1")
+    @Contract(pure = true, value = "_, _ -> new")
+    public @NotNull Mono<ServicePool> emptyServicePool(NamespacedKey poolName, boolean multithreaded) {
+        ServicePool pool = new ServicePool(poolName, multithreaded);
+        return Mono.just(pool);
+    }
+
+    @Contract("_, _ -> new")
     public @NotNull Mono<ServicePool> addToExistingPool(@NotNull ServicePool pool, IService... services) {
         Flux.fromIterable(Arrays.asList(services)).doOnEach(s -> {
             pool.addService(s.get());
@@ -44,7 +49,7 @@ public final class ServiceManager {
         return Mono.just(pool);
     }
 
-    @Contract("_, _ -> param1")
+    @Contract("_, _ -> new")
     public @NotNull Mono<ServicePool> takeFromExistingPool(@NotNull ServicePool pool, IService... services) {
         Flux.fromIterable(Arrays.asList(services)).doOnEach(s -> {
             pool.removeService(s.get());
@@ -52,14 +57,17 @@ public final class ServiceManager {
         return Mono.just(pool);
     }
 
+    @Contract(" -> new")
     public @NotNull Flux<ServicePool> getServicePools() {
         return Flux.fromIterable(servicePools);
     }
 
+    @Contract(pure = true)
     public boolean locateServiceWithinPools(IService service) {
         return servicePools.stream().map(p -> p.isValidService(service)).findFirst().orElseGet(() -> false);
     }
 
+    @Contract("_ -> new")
     public @NotNull Mono<ServicePool> getAssociatedServicePool(IService service) {
         if (!locateServiceWithinPools(service)) return Mono.empty();
         return getServicePools()
@@ -67,6 +75,7 @@ public final class ServiceManager {
                 .next();
     }
 
+    @Contract("-> _")
     public Plugin getProvidingPlugin() {
         return plugin;
     }

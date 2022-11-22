@@ -3,12 +3,15 @@ package io.github.simplex.simplexss;
 import io.github.simplex.api.ISchedule;
 import io.github.simplex.api.IService;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import reactor.core.publisher.Mono;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicLong;
 
 public final class SchedulingSystem implements ISchedule {
     private final ServiceManager serviceManager;
@@ -41,7 +44,9 @@ public final class SchedulingSystem implements ISchedule {
     public Mono<ServicePool> queue(@NotNull IService service) {
         return getServiceManager().flatMap(serviceManager -> {
             Mono<ServicePool> pool = serviceManager.getAssociatedServicePool(service);
-            return pool.defaultIfEmpty(Objects.requireNonNull(serviceManager.createServicePool(service).block()));
+            return pool.defaultIfEmpty(Objects.requireNonNull(serviceManager
+                    .createServicePool(ServicePool.getDefaultNamespacedKey(), service)
+                    .block()));
         });
     }
 
