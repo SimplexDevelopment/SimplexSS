@@ -2,22 +2,19 @@ package io.github.simplex.api;
 
 import io.github.simplex.simplexss.ServicePool;
 import org.bukkit.NamespacedKey;
-import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import reactor.core.publisher.Mono;
 
 import java.util.Objects;
-import java.util.concurrent.Delayed;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 public abstract class ExecutableService implements IService {
     private final NamespacedKey service_name;
-    private final Plugin plugin;
     private final long delay;
     private final long period;
     private final boolean repeating;
+    private final boolean mayInterruptWhenRunning;
 
     private boolean cancelled = false;
 
@@ -29,42 +26,31 @@ public abstract class ExecutableService implements IService {
      * then the period will automatically be set to 20 minutes.
      * Each service is registered with a {@link NamespacedKey},
      * to allow for easy identification within the associated {@link ServicePool}.
-     * Each service also has a plugin parameter to allow for easy dependency injection.
      *
-     * @param plugin       Your plugin
-     * @param service_name A namespaced key which can be used to identify the service.
-     * @param delay        A specified amount of time (in ticks) to wait before the service runs.
-     * @param period       How long the service should wait between service executions (in ticks).
-     * @param repeating    If the service should be scheduled for repeated executions or not.
+     * @param service_name            A namespaced key which can be used to identify the service.
+     * @param delay                   A specified amount of time (in ticks) to wait before the service runs.
+     * @param period                  How long the service should wait between service executions (in ticks).
+     * @param repeating               If the service should be scheduled for repeated executions or not.
+     * @param mayInterruptWhenRunning If the service can be cancelled during execution.
      */
-    public ExecutableService(@NotNull Plugin plugin, @NotNull NamespacedKey service_name, @Nullable Long delay, @Nullable Long period, @NotNull Boolean repeating) {
-        this.plugin = plugin;
+    public ExecutableService(
+            @NotNull NamespacedKey service_name,
+            @Nullable Long delay,
+            @Nullable Long period,
+            @NotNull Boolean repeating,
+            @NotNull Boolean mayInterruptWhenRunning) {
         this.service_name = service_name;
         this.repeating = repeating;
         this.delay = Objects.requireNonNullElse(delay, 0L);
         this.period = Objects.requireNonNullElse(period, (20L * 60L) * 20L);
+        this.mayInterruptWhenRunning = mayInterruptWhenRunning;
     }
 
-    /**
-     * @return The NamespacedKey of this service.
-     */
     @Override
     public NamespacedKey getNamespacedKey() {
         return service_name;
     }
 
-    /**
-     * @return The plugin which was defined in the constructor.
-     * This should be an instance of your main plugin class.
-     */
-    @Override
-    public Plugin getProvidingPlugin() {
-        return plugin;
-    }
-
-    /**
-     * @return
-     */
     @Override
     public long getDelay() {
         return delay;
@@ -80,18 +66,37 @@ public abstract class ExecutableService implements IService {
         return repeating;
     }
 
-    @Override
-    public void setCancelled(boolean mayInterruptIfRunning) {
-        if (!mayInterruptIfRunning) {
-            cancelled = false;
-        }
-
-        stop();
-        cancelled = true;
-    }
-
-    @Override
+    /**
+     * Cancels the execution of this service.
+     *
+     * @return true if the service was cancelled, false if not.
+     */
     public boolean isCancelled() {
         return this.cancelled;
+    }
+
+    /**
+     * Cancels the execution of this service.
+     *
+     * @param cancel Whether the service should be cancelled or not.
+     */
+    public Mono<Void> setCancelled(boolean cancel) {
+        if (!mayInterruptWhenRunning) {
+            return Mono.empty();
+        }
+
+        cancelled = cancel;
+        return cancel();
+    }
+
+    /**
+     * Actual stop call, to ensure that the service actually #isCancelled().
+     */
+    @Contract(pure = true)
+    Mono<Void> cancel() {
+        if (isCancelled()) {
+            return stop().then();
+        }
+        return Mono.empty();
     }
 }

@@ -1,6 +1,7 @@
 package io.github.simplex.simplexss;
 
 import io.github.simplex.api.IService;
+import io.github.simplex.api.InvalidServiceException;
 import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.NotNull;
 import reactor.core.Disposable;
@@ -84,6 +85,7 @@ public final class ServicePool {
     }
 
     public Mono<Void> stopServices(Flux<Disposable> disposableThread) {
+        getAssociatedServices().forEach(service -> service.stop().subscribe());
         return disposableThread.doOnNext(Disposable::dispose).then();
     }
 
@@ -104,5 +106,9 @@ public final class ServicePool {
     public Mono<ServicePool> recycle() {
         this.getAssociatedServices().clear();
         return Mono.just(this);
+    }
+
+    public Scheduler getScheduler() {
+        return scheduler;
     }
 }
