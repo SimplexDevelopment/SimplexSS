@@ -4,7 +4,7 @@ import java.util.function.Supplier;
 
 public class InvalidServiceException extends RuntimeException {
     public InvalidServiceException(IService service) {
-        super("The service " + service.getNamespacedKey().getKey() + " has encountered an exception.");
+        super("The service " + service.getNamespacedKey().getKey() + " is not present within any service pool.");
     }
 
     public InvalidServiceException(Throwable th) {

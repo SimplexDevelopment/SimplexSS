@@ -10,7 +10,7 @@ public class ServiceImpl extends ExecutableService {
     private final Main plugin;
 
     public ServiceImpl(Main plugin) {
-        super(IService.getDefaultNamespacedKey(), 20L, 20L * 60L * 10L, true, true);
+        super(plugin.pool, IService.getDefaultNamespacedKey(), 0L, 20 * 60 * 20L, true, false);
         this.plugin = plugin;
     }
 

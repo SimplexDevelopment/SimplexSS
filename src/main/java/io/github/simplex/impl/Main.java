@@ -1,7 +1,9 @@
 package io.github.simplex.impl;
 
+import io.github.simplex.api.IService;
 import io.github.simplex.simplexss.SchedulingSystem;
 import io.github.simplex.simplexss.ServiceManager;
+import io.github.simplex.simplexss.ServicePool;
 import org.bukkit.plugin.java.JavaPlugin;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
@@ -9,6 +11,7 @@ import reactor.core.publisher.Flux;
 import java.util.Objects;
 
 public class Main extends JavaPlugin {
+    public ServicePool pool = new ServicePool(IService.newNamespacedKey("pool", "one"), true);
     private SchedulingSystem<Main> scheduler;
     private Flux<Disposable> disposables;
 
@@ -16,10 +19,8 @@ public class Main extends JavaPlugin {
     public void onEnable() {
         ServiceManager serviceManager = new ServiceManager();
         this.scheduler = new SchedulingSystem<>(serviceManager, this);
-        scheduler.getServiceManager().subscribe(manager -> manager.getServicePools()
-                .doOnEach(signal -> disposables = Objects.requireNonNull(signal.get()).startServices())
-                .subscribeOn(scheduler.getMainSchedulerThread(), false)
-                .subscribe());
+        IService service = new ServiceImpl(this);
+        service.getParentPool().subscribe(element -> disposables = element.startServices());
     }
 
     @Override

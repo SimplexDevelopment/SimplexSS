@@ -14,6 +14,13 @@ import java.util.Set;
 public final class ServiceManager {
     private final Set<ServicePool> servicePools;
 
+    /**
+     * Creates a new instance of the Service Manager class.
+     * This class acts as a Service Pool factory, and can be used to create
+     * both single and multithreaded Service Pools, empty service pools, as well as
+     * retrieve existing Service Pools. It also provides methods for you to add and remove
+     * {@link IService}s from the {ServicePool} parameter.
+     */
     public ServiceManager() {
         servicePools = new HashSet<>();
     }

@@ -68,4 +68,16 @@ public interface IService extends Runnable {
                     .orElseThrow(InvalidServicePoolException.supplyException()))
                 .subscribe();
     }
+
+    /**
+     * This is an easy static call for creating a new namespaced key for services and service pools.
+     *
+     * @param space The namespace of the service.
+     * @param key The key name of the service.
+     * @return A NamespacedKey object representing the service.
+     */
+    @Contract("_, _ -> new")
+    static @NotNull NamespacedKey newNamespacedKey(String space, String key) {
+        return new NamespacedKey(space, key);
+    }
 }

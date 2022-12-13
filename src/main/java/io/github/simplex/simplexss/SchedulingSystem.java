@@ -19,6 +19,12 @@ public final class SchedulingSystem<T extends JavaPlugin> implements ISchedule {
     private final Set<ServicePool> repeatingPools;
     private final Scheduler mainScheduler;
 
+    /**
+     * Creates a new instance of the scheduling system. This is used to manage the scheduling of services.
+     *
+     * @param serviceManager The service manager to use for this scheduling system.
+     * @param plugin         The plugin to use for this scheduling system. This should be an instance of your plugin.
+     */
     public SchedulingSystem(@NotNull ServiceManager serviceManager, T plugin) {
         this.serviceManager = serviceManager;
         this.plugin = plugin;
@@ -53,8 +59,7 @@ public final class SchedulingSystem<T extends JavaPlugin> implements ISchedule {
     @Override
     public @NotNull Mono<Void> runOnce(IService service) {
         return Mono.just(service).doOnNext(s -> {
-            s.start().subscribe();
-            s.stop().subscribe();
+            s.start().then(s.stop()).subscribe();
         }).then();
     }
 
