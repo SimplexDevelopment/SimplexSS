@@ -29,7 +29,7 @@ public final class SchedulingSystem<T extends JavaPlugin> implements ISchedule {
         this.serviceManager = new ServiceManager();
         this.plugin = plugin;
         this.repeatingPools = new HashSet<>();
-        this.mainScheduler = new ReactorBukkitScheduler(plugin, plugin.getServer().getScheduler());
+        this.mainScheduler = new ReactorBukkitScheduler(plugin);
     }
 
     /**

@@ -9,8 +9,15 @@ import reactor.core.scheduler.Scheduler;
 
 import java.util.concurrent.TimeUnit;
 
-public record ReactorBukkitScheduler(JavaPlugin plugin, BukkitScheduler scheduler)
+public final class ReactorBukkitScheduler
         implements Scheduler, Scheduler.Worker {
+    private final JavaPlugin plugin;
+    private final BukkitScheduler scheduler;
+
+    public ReactorBukkitScheduler(JavaPlugin plugin) {
+        this.plugin = plugin;
+        this.scheduler = plugin.getServer().getScheduler();
+    }
 
     /**
      * Delegates to the {@link BukkitScheduler}.
@@ -58,9 +65,9 @@ public record ReactorBukkitScheduler(JavaPlugin plugin, BukkitScheduler schedule
     }
 
     /**
-     * A new {@link Scheduler.Worker}.
+     * A new {@link Worker}.
      *
-     * @return This class instance, as it implements {@link Scheduler.Worker}.
+     * @return This class instance, as it implements {@link Worker}.
      */
     @Override
     public @NotNull Worker createWorker() {
@@ -72,6 +79,5 @@ public record ReactorBukkitScheduler(JavaPlugin plugin, BukkitScheduler schedule
      */
     @Override
     public void dispose() {
-
     }
 }

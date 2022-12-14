@@ -1,7 +1,6 @@
 package io.github.simplexdevelopment.scheduler;
 
 import io.github.simplexdevelopment.api.IService;
-import io.github.simplexdevelopment.api.InvalidServicePoolException;
 import org.bukkit.NamespacedKey;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Contract;
@@ -34,7 +33,6 @@ public final class ServicePool {
      * The key used to identify this service pool.
      */
     private final NamespacedKey name;
-    private final ReactorBukkitScheduler rbScheduler;
 
     /**
      * This will create a new instance of a Service Pool with a {@link Scheduler} as its main scheduler.
@@ -51,7 +49,6 @@ public final class ServicePool {
         } else {
             this.scheduler = Schedulers.single();
         }
-        this.rbScheduler = null;
     }
 
     /**
@@ -63,8 +60,7 @@ public final class ServicePool {
     public ServicePool(NamespacedKey name, JavaPlugin plugin) {
         this.name = name;
         this.associatedServices = new HashSet<>();
-        this.scheduler = null;
-        this.rbScheduler = new ReactorBukkitScheduler(plugin, plugin.getServer().getScheduler());
+        this.scheduler = new ReactorBukkitScheduler(plugin);
     }
 
     /**
@@ -100,38 +96,21 @@ public final class ServicePool {
 
     /**
      * @param service The name of the service to queue. This should be a service that is located within this service pool.
-     *                     If you name a service that is stored within another service pool,
-     *                     this method will throw an error.
+     *                If you name a service that is stored within another service pool,
+     *                this method will throw an error.
      * @return A {@link Mono} object which contains a {@link Disposable} element which can be used to destroy the registered service.
      */
     public @NotNull Mono<Disposable> queueService(IService service) {
         return Mono.just(service).map(s -> {
             if (s.isPeriodic()) {
-                if (scheduler != null) {
-                    return scheduler.schedulePeriodically(s,
-                            s.getDelay() * 50,
-                            s.getPeriod() * 50,
-                            TimeUnit.MILLISECONDS);
-                } else if (rbScheduler != null) {
-                    return rbScheduler.schedulePeriodically(s,
-                            s.getDelay() * 50,
-                            s.getPeriod() * 50,
-                            TimeUnit.MILLISECONDS);
-                } else {
-                    throw new InvalidServicePoolException("Service pool is not initialized properly.");
-                }
+                return scheduler.schedulePeriodically(s,
+                        s.getDelay() * 50,
+                        s.getPeriod() * 50,
+                        TimeUnit.MILLISECONDS);
             } else {
-                if (scheduler != null) {
-                    return scheduler.schedule(s,
-                            s.getDelay() * 50,
-                            TimeUnit.MILLISECONDS);
-                } else if (rbScheduler != null) {
-                    return rbScheduler.schedule(s,
-                            s.getDelay() * 50,
-                            TimeUnit.MILLISECONDS);
-                } else {
-                    throw new InvalidServicePoolException("Service pool is not initialized properly.");
-                }
+                return scheduler.schedule(s,
+                        s.getDelay() * 50,
+                        TimeUnit.MILLISECONDS);
             }
         });
     }
