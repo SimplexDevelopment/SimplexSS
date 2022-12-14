@@ -1,7 +1,9 @@
-package io.github.simplex.simplexss;
+package io.github.simplexdevelopment.scheduler;
 
-import io.github.simplex.api.IService;
+import io.github.simplexdevelopment.api.IService;
+import io.github.simplexdevelopment.api.InvalidServicePoolException;
 import org.bukkit.NamespacedKey;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -13,10 +15,13 @@ import reactor.core.scheduler.Schedulers;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public final class ServicePool {
+    /**
+     * The default {@link NamespacedKey} used to identify unmarked services. This will cause errors if left unchecked.
+     */
+    private static final NamespacedKey DEFAULT = new NamespacedKey("simplex_ss", "default_service_pool");
     /**
      * A collection of services related to this service pool.
      */
@@ -29,23 +34,37 @@ public final class ServicePool {
      * The key used to identify this service pool.
      */
     private final NamespacedKey name;
-    /**
-     * The default {@link NamespacedKey} used to identify unmarked services. This will cause errors if left unchecked.
-     */
-    private static final NamespacedKey DEFAULT = new NamespacedKey("simplex_ss", "default_service_pool");
+    private final ReactorBukkitScheduler rbScheduler;
 
     /**
-     * @param name The name of this service pool.
+     * This will create a new instance of a Service Pool with a {@link Scheduler} as its main scheduler.
+     * This should be used if you'd like to execute tasks without communicating on the main server thread.
+     *
+     * @param name          The name of this service pool.
      * @param multithreaded Whether this service pool should be multithreaded, or operate upon a single thread.
      */
     public ServicePool(NamespacedKey name, boolean multithreaded) {
         this.name = name;
         this.associatedServices = new HashSet<>();
         if (multithreaded) {
-            this.scheduler = Schedulers.newBoundedElastic(4, 10, "");
+            this.scheduler = Schedulers.boundedElastic();
         } else {
-            this.scheduler = Schedulers.fromExecutorService(Executors.newSingleThreadExecutor());
+            this.scheduler = Schedulers.single();
         }
+        this.rbScheduler = null;
+    }
+
+    /**
+     * This will create a new instance of a Service Pool with the {@link ReactorBukkitScheduler} as its main scheduler.
+     * This should be used if you'd like to execute tasks while communicating on the main server thread.
+     *
+     * @param name The name of this service pool.
+     */
+    public ServicePool(NamespacedKey name, JavaPlugin plugin) {
+        this.name = name;
+        this.associatedServices = new HashSet<>();
+        this.scheduler = null;
+        this.rbScheduler = new ReactorBukkitScheduler(plugin, plugin.getServer().getScheduler());
     }
 
     /**
@@ -80,48 +99,52 @@ public final class ServicePool {
     }
 
     /**
-     * @param service_name The name of the service to queue. This should be a service that is located within this service pool.
+     * @param service The name of the service to queue. This should be a service that is located within this service pool.
      *                     If you name a service that is stored within another service pool,
      *                     this method will throw an error.
      * @return A {@link Mono} object which contains a {@link Disposable} element which can be used to destroy the registered service.
      */
-    public @NotNull Mono<Disposable> queueService(NamespacedKey service_name) {
-        Mono<IService> service = getService(service_name);
-        return service.map(s -> {
+    public @NotNull Mono<Disposable> queueService(IService service) {
+        return Mono.just(service).map(s -> {
             if (s.isPeriodic()) {
-                return scheduler.schedulePeriodically(s,
-                        s.getDelay() * 50,
-                        s.getPeriod() * 50,
-                        TimeUnit.MILLISECONDS);
+                if (scheduler != null) {
+                    return scheduler.schedulePeriodically(s,
+                            s.getDelay() * 50,
+                            s.getPeriod() * 50,
+                            TimeUnit.MILLISECONDS);
+                } else if (rbScheduler != null) {
+                    return rbScheduler.schedulePeriodically(s,
+                            s.getDelay() * 50,
+                            s.getPeriod() * 50,
+                            TimeUnit.MILLISECONDS);
+                } else {
+                    throw new InvalidServicePoolException("Service pool is not initialized properly.");
+                }
+            } else {
+                if (scheduler != null) {
+                    return scheduler.schedule(s,
+                            s.getDelay() * 50,
+                            TimeUnit.MILLISECONDS);
+                } else if (rbScheduler != null) {
+                    return rbScheduler.schedule(s,
+                            s.getDelay() * 50,
+                            TimeUnit.MILLISECONDS);
+                } else {
+                    throw new InvalidServicePoolException("Service pool is not initialized properly.");
+                }
             }
-            return scheduler.schedule(s,
-                    s.getDelay() * 50,
-                    TimeUnit.MILLISECONDS);
-
         });
     }
 
     /**
      * @return A {@link Flux} object which contains a collection of {@link Disposable} elements,
-     * which can be used to destroy the registered services using {@link ServicePool#stopServices(Flux<Disposable>)}.
+     * which can be used to destroy the registered services using {@link ServicePool#stopServices(Flux)}.
      */
     public @NotNull Flux<Disposable> startServices() {
-        return Mono.just(getAssociatedServices()).flatMapMany(services -> {
-            Set<Disposable> disposables = new HashSet<>();
-            for (IService service : services) {
-                if (service.isPeriodic()) {
-                    disposables.add(scheduler.schedulePeriodically(service,
-                            service.getDelay() * 50,
-                            service.getPeriod() * 50,
-                            TimeUnit.MILLISECONDS));
-                } else {
-                    disposables.add(scheduler.schedule(service,
-                            service.getDelay() * 50,
-                            TimeUnit.MILLISECONDS));
-                }
-            }
-            return Flux.fromIterable(disposables);
-        });
+        Set<Disposable> disposables = new HashSet<>();
+        return Flux.fromIterable(getAssociatedServices())
+                .doOnEach(service -> disposables.add(queueService(service.get()).block()))
+                .flatMap(service -> Flux.fromIterable(disposables));
     }
 
     /**
@@ -135,7 +158,7 @@ public final class ServicePool {
 
     /**
      * @param service_name The name of the service to stop.
-     * @param disposable A {@link Disposable} object which contains the service that should be disposed.
+     * @param disposable   A {@link Disposable} object which contains the service that should be disposed.
      * @return A {@link Mono<Void>} object which can be used to stop the service.
      */
     public @NotNull Mono<Void> stopService(@NotNull NamespacedKey service_name, @Nullable Mono<Disposable> disposable) {

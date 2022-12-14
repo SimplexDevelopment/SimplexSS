@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="dc.created" content="2022-12-13">
-<meta name="description" content="declaration: package: io.github.simplex.simplexss, class: SchedulingSystem">
+<meta name="description" content="declaration: package: io.github.simplexdevelopment.scheduler, class: SchedulingSystem">
 <meta name="generator" content="javadoc/ClassWriterImpl">
 <link rel="stylesheet" type="text/css" href="../../../../stylesheet.css" title="Style">
 <link rel="stylesheet" type="text/css" href="../../../../script-dir/jquery-ui.min.css" title="Style">
@@ -68,21 +68,21 @@ loadScripts(document, 'script');</script>
 <main role="main">
 <!-- ======== START OF CLASS DATA ======== -->
 <div class="header">
-<div class="sub-title"><span class="package-label-in-type">Package</span>&nbsp;<a href="package-summary.html">io.github.simplex.simplexss</a></div>
+<div class="sub-title"><span class="package-label-in-type">Package</span>&nbsp;<a href="package-summary.html">io.github.simplexdevelopment.scheduler</a></div>
 <h1 title="Class SchedulingSystem" class="title">Class SchedulingSystem&lt;T extends org.bukkit.plugin.java.JavaPlugin&gt;</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
-<div class="inheritance">io.github.simplex.simplexss.SchedulingSystem&lt;T&gt;</div>
+<div class="inheritance">io.github.simplexdevelopment.scheduler.SchedulingSystem&lt;T&gt;</div>
 </div>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="../api/ISchedule.html" title="interface in io.github.simplex.api">ISchedule</a></code></dd>
+<dd><code><a href="../api/ISchedule.html" title="interface in io.github.simplexdevelopment.api">ISchedule</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public final class </span><span class="element-name type-name-label">SchedulingSystem&lt;T extends org.bukkit.plugin.java.JavaPlugin&gt;</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
-implements <a href="../api/ISchedule.html" title="interface in io.github.simplex.api">ISchedule</a></span></div>
+implements <a href="../api/ISchedule.html" title="interface in io.github.simplexdevelopment.api">ISchedule</a></span></div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -101,10 +101,10 @@ implements <a href="../api/ISchedule.html" title="interface in io.github.simplex
 <div class="col-first odd-row-color"><code>private final <a href="SchedulingSystem.html" title="type parameter in SchedulingSystem">T</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#plugin" class="member-name-link">plugin</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>private final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="ServicePool.html" title="class in io.github.simplex.simplexss">ServicePool</a>&gt;</code></div>
+<div class="col-first even-row-color"><code>private final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="ServicePool.html" title="class in io.github.simplexdevelopment.scheduler">ServicePool</a>&gt;</code></div>
 <div class="col-second even-row-color"><code><a href="#repeatingPools" class="member-name-link">repeatingPools</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>private final <a href="ServiceManager.html" title="class in io.github.simplex.simplexss">ServiceManager</a></code></div>
+<div class="col-first odd-row-color"><code>private final <a href="ServiceManager.html" title="class in io.github.simplexdevelopment.scheduler">ServiceManager</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#serviceManager" class="member-name-link">serviceManager</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 </div>
@@ -118,7 +118,7 @@ implements <a href="../api/ISchedule.html" title="interface in io.github.simplex
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(io.github.simplex.simplexss.ServiceManager,T)" class="member-name-link">SchedulingSystem</a><wbr>(@NotNull <a href="ServiceManager.html" title="class in io.github.simplex.simplexss">ServiceManager</a>&nbsp;serviceManager,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(io.github.simplexdevelopment.scheduler.ServiceManager,T)" class="member-name-link">SchedulingSystem</a><wbr>(@NotNull <a href="ServiceManager.html" title="class in io.github.simplexdevelopment.scheduler">ServiceManager</a>&nbsp;serviceManager,
  <a href="SchedulingSystem.html" title="type parameter in SchedulingSystem">T</a>&nbsp;plugin)</code></div>
 <div class="col-last even-row-color">
 <div class="block">Creates a new instance of the scheduling system.</div>
@@ -138,10 +138,10 @@ implements <a href="../api/ISchedule.html" title="interface in io.github.simplex
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>reactor.core.publisher.Mono&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Void.html" title="class or interface in java.lang" class="external-link">Void</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#forceStart(io.github.simplex.api.IService)" class="member-name-link">forceStart</a><wbr>(<a href="../api/IService.html" title="interface in io.github.simplex.api">IService</a>&nbsp;service)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#forceStart(io.github.simplexdevelopment.api.IService)" class="member-name-link">forceStart</a><wbr>(<a href="../api/IService.html" title="interface in io.github.simplexdevelopment.api">IService</a>&nbsp;service)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>reactor.core.publisher.Mono&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Void.html" title="class or interface in java.lang" class="external-link">Void</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#forceStop(io.github.simplex.api.IService)" class="member-name-link">forceStop</a><wbr>(<a href="../api/IService.html" title="interface in io.github.simplex.api">IService</a>&nbsp;service)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#forceStop(io.github.simplexdevelopment.api.IService)" class="member-name-link">forceStop</a><wbr>(<a href="../api/IService.html" title="interface in io.github.simplexdevelopment.api">IService</a>&nbsp;service)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>reactor.core.scheduler.Scheduler</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMainSchedulerThread()" class="member-name-link">getMainSchedulerThread</a>()</code></div>
@@ -149,17 +149,17 @@ implements <a href="../api/ISchedule.html" title="interface in io.github.simplex
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>@NotNull reactor.core.publisher.Mono&lt;<a href="SchedulingSystem.html" title="type parameter in SchedulingSystem">T</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProvidingPlugin()" class="member-name-link">getProvidingPlugin</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="ServicePool.html" title="class in io.github.simplex.simplexss">ServicePool</a>&gt;</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="ServicePool.html" title="class in io.github.simplexdevelopment.scheduler">ServicePool</a>&gt;</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getRepeatingPools()" class="member-name-link">getRepeatingPools</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>@NotNull reactor.core.publisher.Mono&lt;<a href="ServiceManager.html" title="class in io.github.simplex.simplexss">ServiceManager</a>&gt;</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>@NotNull reactor.core.publisher.Mono&lt;<a href="ServiceManager.html" title="class in io.github.simplexdevelopment.scheduler">ServiceManager</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getServiceManager()" class="member-name-link">getServiceManager</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>@NotNull reactor.core.publisher.Mono&lt;<a href="ServicePool.html" title="class in io.github.simplex.simplexss">ServicePool</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#queue(io.github.simplex.api.IService)" class="member-name-link">queue</a><wbr>(@NotNull <a href="../api/IService.html" title="interface in io.github.simplex.api">IService</a>&nbsp;service)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>@NotNull reactor.core.publisher.Mono&lt;<a href="ServicePool.html" title="class in io.github.simplexdevelopment.scheduler">ServicePool</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#queue(io.github.simplexdevelopment.api.IService)" class="member-name-link">queue</a><wbr>(@NotNull <a href="../api/IService.html" title="interface in io.github.simplexdevelopment.api">IService</a>&nbsp;service)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>@NotNull reactor.core.publisher.Mono&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Void.html" title="class or interface in java.lang" class="external-link">Void</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#runOnce(io.github.simplex.api.IService)" class="member-name-link">runOnce</a><wbr>(<a href="../api/IService.html" title="interface in io.github.simplex.api">IService</a>&nbsp;service)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#runOnce(io.github.simplexdevelopment.api.IService)" class="member-name-link">runOnce</a><wbr>(<a href="../api/IService.html" title="interface in io.github.simplexdevelopment.api">IService</a>&nbsp;service)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
@@ -181,7 +181,7 @@ implements <a href="../api/ISchedule.html" title="interface in io.github.simplex
 <li>
 <section class="detail" id="serviceManager">
 <h3>serviceManager</h3>
-<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type"><a href="ServiceManager.html" title="class in io.github.simplex.simplexss">ServiceManager</a></span>&nbsp;<span class="element-name">serviceManager</span></div>
+<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type"><a href="ServiceManager.html" title="class in io.github.simplexdevelopment.scheduler">ServiceManager</a></span>&nbsp;<span class="element-name">serviceManager</span></div>
 </section>
 </li>
 <li>
@@ -193,7 +193,7 @@ implements <a href="../api/ISchedule.html" title="interface in io.github.simplex
 <li>
 <section class="detail" id="repeatingPools">
 <h3>repeatingPools</h3>
-<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="ServicePool.html" title="class in io.github.simplex.simplexss">ServicePool</a>&gt;</span>&nbsp;<span class="element-name">repeatingPools</span></div>
+<div class="member-signature"><span class="modifiers">private final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="ServicePool.html" title="class in io.github.simplexdevelopment.scheduler">ServicePool</a>&gt;</span>&nbsp;<span class="element-name">repeatingPools</span></div>
 </section>
 </li>
 <li>
@@ -211,10 +211,10 @@ implements <a href="../api/ISchedule.html" title="interface in io.github.simplex
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(io.github.simplex.simplexss.ServiceManager,T)">
-<h3 id="&lt;init&gt;(io.github.simplex.simplexss.ServiceManager,org.bukkit.plugin.java.JavaPlugin)">SchedulingSystem</h3>
+<section class="detail" id="&lt;init&gt;(io.github.simplexdevelopment.scheduler.ServiceManager,T)">
+<h3 id="&lt;init&gt;(io.github.simplexdevelopment.scheduler.ServiceManager,org.bukkit.plugin.java.JavaPlugin)">SchedulingSystem</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">SchedulingSystem</span><wbr><span class="parameters">(@NotNull
- @NotNull <a href="ServiceManager.html" title="class in io.github.simplex.simplexss">ServiceManager</a>&nbsp;serviceManager,
+ @NotNull <a href="ServiceManager.html" title="class in io.github.simplexdevelopment.scheduler">ServiceManager</a>&nbsp;serviceManager,
  <a href="SchedulingSystem.html" title="type parameter in SchedulingSystem">T</a>&nbsp;plugin)</span></div>
 <div class="block">Creates a new instance of the scheduling system. This is used to manage the scheduling of services.</div>
 <dl class="notes">
@@ -236,10 +236,10 @@ implements <a href="../api/ISchedule.html" title="interface in io.github.simplex
 <section class="detail" id="getRepeatingPools()">
 <h3>getRepeatingPools</h3>
 <div class="member-signature"><span class="annotations">@Contract(pure=true)
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="ServicePool.html" title="class in io.github.simplex.simplexss">ServicePool</a>&gt;</span>&nbsp;<span class="element-name">getRepeatingPools</span>()</div>
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="ServicePool.html" title="class in io.github.simplexdevelopment.scheduler">ServicePool</a>&gt;</span>&nbsp;<span class="element-name">getRepeatingPools</span>()</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>A set of <a href="ServicePool.html" title="class in io.github.simplex.simplexss"><code>ServicePool</code></a>s which contain repeating services.</dd>
+<dd>A set of <a href="ServicePool.html" title="class in io.github.simplexdevelopment.scheduler"><code>ServicePool</code></a>s which contain repeating services.</dd>
 </dl>
 </section>
 </li>
@@ -247,24 +247,24 @@ implements <a href="../api/ISchedule.html" title="interface in io.github.simplex
 <section class="detail" id="getServiceManager()">
 <h3>getServiceManager</h3>
 <div class="member-signature"><span class="annotations">@NotNull
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type">@NotNull reactor.core.publisher.Mono&lt;<a href="ServiceManager.html" title="class in io.github.simplex.simplexss">ServiceManager</a>&gt;</span>&nbsp;<span class="element-name">getServiceManager</span>()</div>
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type">@NotNull reactor.core.publisher.Mono&lt;<a href="ServiceManager.html" title="class in io.github.simplexdevelopment.scheduler">ServiceManager</a>&gt;</span>&nbsp;<span class="element-name">getServiceManager</span>()</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../api/ISchedule.html#getServiceManager()">getServiceManager</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ISchedule.html" title="interface in io.github.simplex.api">ISchedule</a></code></dd>
+<dd><code><a href="../api/ISchedule.html#getServiceManager()">getServiceManager</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ISchedule.html" title="interface in io.github.simplexdevelopment.api">ISchedule</a></code></dd>
 <dt>Returns:</dt>
 <dd>The service manager which exerts control over the service pools and their associated services.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="queue(io.github.simplex.api.IService)">
+<section class="detail" id="queue(io.github.simplexdevelopment.api.IService)">
 <h3>queue</h3>
 <div class="member-signature"><span class="annotations">@NotNull
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type">@NotNull reactor.core.publisher.Mono&lt;<a href="ServicePool.html" title="class in io.github.simplex.simplexss">ServicePool</a>&gt;</span>&nbsp;<span class="element-name">queue</span><wbr><span class="parameters">(@NotNull
- @NotNull <a href="../api/IService.html" title="interface in io.github.simplex.api">IService</a>&nbsp;service)</span></div>
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type">@NotNull reactor.core.publisher.Mono&lt;<a href="ServicePool.html" title="class in io.github.simplexdevelopment.scheduler">ServicePool</a>&gt;</span>&nbsp;<span class="element-name">queue</span><wbr><span class="parameters">(@NotNull
+ @NotNull <a href="../api/IService.html" title="interface in io.github.simplexdevelopment.api">IService</a>&nbsp;service)</span></div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../api/ISchedule.html#queue(io.github.simplex.api.IService)">queue</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ISchedule.html" title="interface in io.github.simplex.api">ISchedule</a></code></dd>
+<dd><code><a href="../api/ISchedule.html#queue(io.github.simplexdevelopment.api.IService)">queue</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ISchedule.html" title="interface in io.github.simplexdevelopment.api">ISchedule</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>service</code> - The service to use to locate the associated service pool and queue the service for execution.</dd>
 <dt>Returns:</dt>
@@ -274,13 +274,13 @@ implements <a href="../api/ISchedule.html" title="interface in io.github.simplex
 </section>
 </li>
 <li>
-<section class="detail" id="runOnce(io.github.simplex.api.IService)">
+<section class="detail" id="runOnce(io.github.simplexdevelopment.api.IService)">
 <h3>runOnce</h3>
 <div class="member-signature"><span class="annotations">@NotNull
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type">@NotNull reactor.core.publisher.Mono&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Void.html" title="class or interface in java.lang" class="external-link">Void</a>&gt;</span>&nbsp;<span class="element-name">runOnce</span><wbr><span class="parameters">(<a href="../api/IService.html" title="interface in io.github.simplex.api">IService</a>&nbsp;service)</span></div>
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type">@NotNull reactor.core.publisher.Mono&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Void.html" title="class or interface in java.lang" class="external-link">Void</a>&gt;</span>&nbsp;<span class="element-name">runOnce</span><wbr><span class="parameters">(<a href="../api/IService.html" title="interface in io.github.simplexdevelopment.api">IService</a>&nbsp;service)</span></div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../api/ISchedule.html#runOnce(io.github.simplex.api.IService)">runOnce</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ISchedule.html" title="interface in io.github.simplex.api">ISchedule</a></code></dd>
+<dd><code><a href="../api/ISchedule.html#runOnce(io.github.simplexdevelopment.api.IService)">runOnce</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ISchedule.html" title="interface in io.github.simplexdevelopment.api">ISchedule</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>service</code> - The service to run once.</dd>
 <dt>Returns:</dt>
@@ -289,12 +289,12 @@ implements <a href="../api/ISchedule.html" title="interface in io.github.simplex
 </section>
 </li>
 <li>
-<section class="detail" id="forceStop(io.github.simplex.api.IService)">
+<section class="detail" id="forceStop(io.github.simplexdevelopment.api.IService)">
 <h3>forceStop</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">reactor.core.publisher.Mono&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Void.html" title="class or interface in java.lang" class="external-link">Void</a>&gt;</span>&nbsp;<span class="element-name">forceStop</span><wbr><span class="parameters">(<a href="../api/IService.html" title="interface in io.github.simplex.api">IService</a>&nbsp;service)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">reactor.core.publisher.Mono&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Void.html" title="class or interface in java.lang" class="external-link">Void</a>&gt;</span>&nbsp;<span class="element-name">forceStop</span><wbr><span class="parameters">(<a href="../api/IService.html" title="interface in io.github.simplexdevelopment.api">IService</a>&nbsp;service)</span></div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../api/ISchedule.html#forceStop(io.github.simplex.api.IService)">forceStop</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ISchedule.html" title="interface in io.github.simplex.api">ISchedule</a></code></dd>
+<dd><code><a href="../api/ISchedule.html#forceStop(io.github.simplexdevelopment.api.IService)">forceStop</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ISchedule.html" title="interface in io.github.simplexdevelopment.api">ISchedule</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>service</code> - The service to forcefully stop.</dd>
 <dt>Returns:</dt>
@@ -303,12 +303,12 @@ implements <a href="../api/ISchedule.html" title="interface in io.github.simplex
 </section>
 </li>
 <li>
-<section class="detail" id="forceStart(io.github.simplex.api.IService)">
+<section class="detail" id="forceStart(io.github.simplexdevelopment.api.IService)">
 <h3>forceStart</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">reactor.core.publisher.Mono&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Void.html" title="class or interface in java.lang" class="external-link">Void</a>&gt;</span>&nbsp;<span class="element-name">forceStart</span><wbr><span class="parameters">(<a href="../api/IService.html" title="interface in io.github.simplex.api">IService</a>&nbsp;service)</span></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">reactor.core.publisher.Mono&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Void.html" title="class or interface in java.lang" class="external-link">Void</a>&gt;</span>&nbsp;<span class="element-name">forceStart</span><wbr><span class="parameters">(<a href="../api/IService.html" title="interface in io.github.simplexdevelopment.api">IService</a>&nbsp;service)</span></div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../api/ISchedule.html#forceStart(io.github.simplex.api.IService)">forceStart</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ISchedule.html" title="interface in io.github.simplex.api">ISchedule</a></code></dd>
+<dd><code><a href="../api/ISchedule.html#forceStart(io.github.simplexdevelopment.api.IService)">forceStart</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ISchedule.html" title="interface in io.github.simplexdevelopment.api">ISchedule</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>service</code> - The service to forcefully start.</dd>
 <dt>Returns:</dt>

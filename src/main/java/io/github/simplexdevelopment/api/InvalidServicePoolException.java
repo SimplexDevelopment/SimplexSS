@@ -1,4 +1,4 @@
-package io.github.simplex.api;
+package io.github.simplexdevelopment.api;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -8,6 +8,10 @@ import java.util.function.Supplier;
 public class InvalidServicePoolException extends RuntimeException {
     public InvalidServicePoolException() {
         super("There is no service pool associated with this service. The service will be automatically recycled.");
+    }
+
+    public InvalidServicePoolException(@NotNull String string) {
+        super(string);
     }
 
     public InvalidServicePoolException(Throwable ex) {

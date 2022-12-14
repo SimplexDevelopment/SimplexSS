@@ -1,6 +1,6 @@
-package io.github.simplex.simplexss;
+package io.github.simplexdevelopment.scheduler;
 
-import io.github.simplex.api.IService;
+import io.github.simplexdevelopment.api.IService;
 import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;

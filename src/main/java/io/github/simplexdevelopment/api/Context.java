@@ -1,4 +1,4 @@
-package io.github.simplex.api;
+package io.github.simplexdevelopment.api;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

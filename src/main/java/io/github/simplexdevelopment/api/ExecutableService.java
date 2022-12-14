@@ -1,6 +1,6 @@
-package io.github.simplex.api;
+package io.github.simplexdevelopment.api;
 
-import io.github.simplex.simplexss.ServicePool;
+import io.github.simplexdevelopment.scheduler.ServicePool;
 import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;

@@ -1,4 +1,4 @@
-package io.github.simplex.api;
+package io.github.simplexdevelopment.api;
 
 import java.util.function.Supplier;
 

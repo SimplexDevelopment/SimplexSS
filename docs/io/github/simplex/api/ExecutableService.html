@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta name="dc.created" content="2022-12-13">
-<meta name="description" content="declaration: package: io.github.simplex.api, class: ExecutableService">
+<meta name="description" content="declaration: package: io.github.simplexdevelopment.api, class: ExecutableService">
 <meta name="generator" content="javadoc/ClassWriterImpl">
 <link rel="stylesheet" type="text/css" href="../../../../stylesheet.css" title="Style">
 <link rel="stylesheet" type="text/css" href="../../../../script-dir/jquery-ui.min.css" title="Style">
@@ -68,25 +68,25 @@ loadScripts(document, 'script');</script>
 <main role="main">
 <!-- ======== START OF CLASS DATA ======== -->
 <div class="header">
-<div class="sub-title"><span class="package-label-in-type">Package</span>&nbsp;<a href="package-summary.html">io.github.simplex.api</a></div>
+<div class="sub-title"><span class="package-label-in-type">Package</span>&nbsp;<a href="package-summary.html">io.github.simplexdevelopment.api</a></div>
 <h1 title="Class ExecutableService" class="title">Class ExecutableService</h1>
 </div>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
-<div class="inheritance">io.github.simplex.api.ExecutableService</div>
+<div class="inheritance">io.github.simplexdevelopment.api.ExecutableService</div>
 </div>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="IService.html" title="interface in io.github.simplex.api">IService</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Runnable.html" title="class or interface in java.lang" class="external-link">Runnable</a></code></dd>
+<dd><code><a href="IService.html" title="interface in io.github.simplexdevelopment.api">IService</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Runnable.html" title="class or interface in java.lang" class="external-link">Runnable</a></code></dd>
 </dl>
 <dl class="notes">
 <dt>Direct Known Subclasses:</dt>
-<dd><code><a href="../impl/ServiceImpl.html" title="class in io.github.simplex.impl">ServiceImpl</a></code></dd>
+<dd><code><a href="../impl/ServiceImpl.html" title="class in io.github.simplexdevelopment.impl">ServiceImpl</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public abstract class </span><span class="element-name type-name-label">ExecutableService</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a>
-implements <a href="IService.html" title="interface in io.github.simplex.api">IService</a></span></div>
+implements <a href="IService.html" title="interface in io.github.simplexdevelopment.api">IService</a></span></div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -108,7 +108,7 @@ implements <a href="IService.html" title="interface in io.github.simplex.api">IS
 <div class="col-first even-row-color"><code>private final boolean</code></div>
 <div class="col-second even-row-color"><code><a href="#mayInterruptWhenRunning" class="member-name-link">mayInterruptWhenRunning</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>private <a href="../simplexss/ServicePool.html" title="class in io.github.simplex.simplexss">ServicePool</a></code></div>
+<div class="col-first odd-row-color"><code>private <a href="../simplexss/ServicePool.html" title="class in io.github.simplexdevelopment.scheduler">ServicePool</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#parentPool" class="member-name-link">parentPool</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>private final long</code></div>
@@ -135,12 +135,12 @@ implements <a href="IService.html" title="interface in io.github.simplex.api">IS
 <div class="col-last even-row-color">
 <div class="block">Creates a new instance of an executable service.</div>
 </div>
-<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(io.github.simplex.simplexss.ServicePool,org.bukkit.NamespacedKey)" class="member-name-link">ExecutableService</a><wbr>(@Nullable <a href="../simplexss/ServicePool.html" title="class in io.github.simplex.simplexss">ServicePool</a>&nbsp;parentPool,
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(io.github.simplexdevelopment.scheduler.ServicePool,org.bukkit.NamespacedKey)" class="member-name-link">ExecutableService</a><wbr>(@Nullable <a href="../simplexss/ServicePool.html" title="class in io.github.simplexdevelopment.scheduler">ServicePool</a>&nbsp;parentPool,
  @NotNull org.bukkit.NamespacedKey&nbsp;service_name)</code></div>
 <div class="col-last odd-row-color">
 <div class="block">Creates a new instance of an executable service.</div>
 </div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(io.github.simplex.simplexss.ServicePool,org.bukkit.NamespacedKey,java.lang.Long,java.lang.Long,java.lang.Boolean)" class="member-name-link">ExecutableService</a><wbr>(@Nullable <a href="../simplexss/ServicePool.html" title="class in io.github.simplex.simplexss">ServicePool</a>&nbsp;parentPool,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(io.github.simplexdevelopment.scheduler.ServicePool,org.bukkit.NamespacedKey,java.lang.Long,java.lang.Long,java.lang.Boolean)" class="member-name-link">ExecutableService</a><wbr>(@Nullable <a href="../simplexss/ServicePool.html" title="class in io.github.simplexdevelopment.scheduler">ServicePool</a>&nbsp;parentPool,
  @NotNull org.bukkit.NamespacedKey&nbsp;service_name,
  @NotNull <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&nbsp;delay,
  @NotNull <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&nbsp;period,
@@ -148,13 +148,13 @@ implements <a href="IService.html" title="interface in io.github.simplex.api">IS
 <div class="col-last even-row-color">
 <div class="block">Creates a new instance of an executable service.</div>
 </div>
-<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(io.github.simplex.simplexss.ServicePool,org.bukkit.NamespacedKey,java.lang.Long)" class="member-name-link">ExecutableService</a><wbr>(@Nullable <a href="../simplexss/ServicePool.html" title="class in io.github.simplex.simplexss">ServicePool</a>&nbsp;parentPool,
+<div class="col-constructor-name odd-row-color"><code><a href="#%3Cinit%3E(io.github.simplexdevelopment.scheduler.ServicePool,org.bukkit.NamespacedKey,java.lang.Long)" class="member-name-link">ExecutableService</a><wbr>(@Nullable <a href="../simplexss/ServicePool.html" title="class in io.github.simplexdevelopment.scheduler">ServicePool</a>&nbsp;parentPool,
  @NotNull org.bukkit.NamespacedKey&nbsp;service_name,
  @Nullable <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&nbsp;delay)</code></div>
 <div class="col-last odd-row-color">
 <div class="block">Creates a new instance of an executable service.</div>
 </div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(io.github.simplex.simplexss.ServicePool,org.bukkit.NamespacedKey,java.lang.Long,java.lang.Long,java.lang.Boolean,java.lang.Boolean)" class="member-name-link">ExecutableService</a><wbr>(@Nullable <a href="../simplexss/ServicePool.html" title="class in io.github.simplex.simplexss">ServicePool</a>&nbsp;parentPool,
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(io.github.simplexdevelopment.scheduler.ServicePool,org.bukkit.NamespacedKey,java.lang.Long,java.lang.Long,java.lang.Boolean,java.lang.Boolean)" class="member-name-link">ExecutableService</a><wbr>(@Nullable <a href="../simplexss/ServicePool.html" title="class in io.github.simplexdevelopment.scheduler">ServicePool</a>&nbsp;parentPool,
  @NotNull org.bukkit.NamespacedKey&nbsp;service_name,
  @Nullable <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&nbsp;delay,
  @Nullable <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Long.html" title="class or interface in java.lang" class="external-link">Long</a>&nbsp;period,
@@ -188,7 +188,7 @@ implements <a href="IService.html" title="interface in io.github.simplex.api">IS
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>org.bukkit.NamespacedKey</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNamespacedKey()" class="member-name-link">getNamespacedKey</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>reactor.core.publisher.Mono&lt;<a href="../simplexss/ServicePool.html" title="class in io.github.simplex.simplexss">ServicePool</a>&gt;</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>reactor.core.publisher.Mono&lt;<a href="../simplexss/ServicePool.html" title="class in io.github.simplexdevelopment.scheduler">ServicePool</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getParentPool()" class="member-name-link">getParentPool</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>long</code></div>
@@ -214,7 +214,7 @@ implements <a href="IService.html" title="interface in io.github.simplex.api">IS
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
 <div class="inherited-list">
-<h3 id="methods-inherited-from-class-io.github.simplex.api.IService">Methods inherited from interface&nbsp;io.github.simplex.api.<a href="IService.html" title="interface in io.github.simplex.api">IService</a></h3>
+<h3 id="methods-inherited-from-class-io.github.simplexdevelopment.api.IService">Methods inherited from interface&nbsp;io.github.simplexdevelopment.api.<a href="IService.html" title="interface in io.github.simplexdevelopment.api">IService</a></h3>
 <code><a href="IService.html#getPlugin()">getPlugin</a>, <a href="IService.html#run()">run</a>, <a href="IService.html#start()">start</a>, <a href="IService.html#stop()">stop</a></code></div>
 </section>
 </li>
@@ -266,7 +266,7 @@ implements <a href="IService.html" title="interface in io.github.simplex.api">IS
 <li>
 <section class="detail" id="parentPool">
 <h3>parentPool</h3>
-<div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type"><a href="../simplexss/ServicePool.html" title="class in io.github.simplex.simplexss">ServicePool</a></span>&nbsp;<span class="element-name">parentPool</span></div>
+<div class="member-signature"><span class="modifiers">private</span>&nbsp;<span class="return-type"><a href="../simplexss/ServicePool.html" title="class in io.github.simplexdevelopment.scheduler">ServicePool</a></span>&nbsp;<span class="element-name">parentPool</span></div>
 </section>
 </li>
 </ul>
@@ -284,7 +284,7 @@ implements <a href="IService.html" title="interface in io.github.simplex.api">IS
  @NotNull org.bukkit.NamespacedKey&nbsp;service_name)</span></div>
 <div class="block">Creates a new instance of an executable service.
  Each service is registered with a <code>NamespacedKey</code>,
- to allow for easy identification within the associated <a href="../simplexss/ServicePool.html" title="class in io.github.simplex.simplexss"><code>ServicePool</code></a>.</div>
+ to allow for easy identification within the associated <a href="../simplexss/ServicePool.html" title="class in io.github.simplexdevelopment.scheduler"><code>ServicePool</code></a>.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>service_name</code> - A namespaced key which can be used to identify the service.</dd>
@@ -292,27 +292,27 @@ implements <a href="IService.html" title="interface in io.github.simplex.api">IS
 </section>
 </li>
 <li>
-<section class="detail" id="&lt;init&gt;(io.github.simplex.simplexss.ServicePool,org.bukkit.NamespacedKey)">
+<section class="detail" id="&lt;init&gt;(io.github.simplexdevelopment.scheduler.ServicePool,org.bukkit.NamespacedKey)">
 <h3>ExecutableService</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ExecutableService</span><wbr><span class="parameters">(@Nullable
- @Nullable <a href="../simplexss/ServicePool.html" title="class in io.github.simplex.simplexss">ServicePool</a>&nbsp;parentPool,
+ @Nullable <a href="../simplexss/ServicePool.html" title="class in io.github.simplexdevelopment.scheduler">ServicePool</a>&nbsp;parentPool,
  @NotNull
  @NotNull org.bukkit.NamespacedKey&nbsp;service_name)</span></div>
 <div class="block">Creates a new instance of an executable service.
  Each service is registered with a <code>NamespacedKey</code>,
- to allow for easy identification within the associated <a href="../simplexss/ServicePool.html" title="class in io.github.simplex.simplexss"><code>ServicePool</code></a>.</div>
+ to allow for easy identification within the associated <a href="../simplexss/ServicePool.html" title="class in io.github.simplexdevelopment.scheduler"><code>ServicePool</code></a>.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>parentPool</code> - The <a href="../simplexss/ServicePool.html" title="class in io.github.simplex.simplexss"><code>ServicePool</code></a> which this service is executing on.</dd>
+<dd><code>parentPool</code> - The <a href="../simplexss/ServicePool.html" title="class in io.github.simplexdevelopment.scheduler"><code>ServicePool</code></a> which this service is executing on.</dd>
 <dd><code>service_name</code> - A namespaced key which can be used to identify the service.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="&lt;init&gt;(io.github.simplex.simplexss.ServicePool,org.bukkit.NamespacedKey,java.lang.Long)">
+<section class="detail" id="&lt;init&gt;(io.github.simplexdevelopment.scheduler.ServicePool,org.bukkit.NamespacedKey,java.lang.Long)">
 <h3>ExecutableService</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ExecutableService</span><wbr><span class="parameters">(@Nullable
- @Nullable <a href="../simplexss/ServicePool.html" title="class in io.github.simplex.simplexss">ServicePool</a>&nbsp;parentPool,
+ @Nullable <a href="../simplexss/ServicePool.html" title="class in io.github.simplexdevelopment.scheduler">ServicePool</a>&nbsp;parentPool,
  @NotNull
  @NotNull org.bukkit.NamespacedKey&nbsp;service_name,
  @Nullable
@@ -321,20 +321,20 @@ implements <a href="IService.html" title="interface in io.github.simplex.api">IS
  The timings are measured in ticks (20 ticks per second).
  You do not need to explicitly define a delay.
  Each service is registered with a <code>NamespacedKey</code>,
- to allow for easy identification within the associated <a href="../simplexss/ServicePool.html" title="class in io.github.simplex.simplexss"><code>ServicePool</code></a>.</div>
+ to allow for easy identification within the associated <a href="../simplexss/ServicePool.html" title="class in io.github.simplexdevelopment.scheduler"><code>ServicePool</code></a>.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>parentPool</code> - The <a href="../simplexss/ServicePool.html" title="class in io.github.simplex.simplexss"><code>ServicePool</code></a> which this service is executing on.</dd>
+<dd><code>parentPool</code> - The <a href="../simplexss/ServicePool.html" title="class in io.github.simplexdevelopment.scheduler"><code>ServicePool</code></a> which this service is executing on.</dd>
 <dd><code>service_name</code> - A namespaced key which can be used to identify the service.</dd>
 <dd><code>delay</code> - A specified amount of time (in ticks) to wait before the service runs.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="&lt;init&gt;(io.github.simplex.simplexss.ServicePool,org.bukkit.NamespacedKey,java.lang.Long,java.lang.Long,java.lang.Boolean)">
+<section class="detail" id="&lt;init&gt;(io.github.simplexdevelopment.scheduler.ServicePool,org.bukkit.NamespacedKey,java.lang.Long,java.lang.Long,java.lang.Boolean)">
 <h3>ExecutableService</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ExecutableService</span><wbr><span class="parameters">(@Nullable
- @Nullable <a href="../simplexss/ServicePool.html" title="class in io.github.simplex.simplexss">ServicePool</a>&nbsp;parentPool,
+ @Nullable <a href="../simplexss/ServicePool.html" title="class in io.github.simplexdevelopment.scheduler">ServicePool</a>&nbsp;parentPool,
  @NotNull
  @NotNull org.bukkit.NamespacedKey&nbsp;service_name,
  @NotNull
@@ -349,10 +349,10 @@ implements <a href="IService.html" title="interface in io.github.simplex.api">IS
  however if you have flagged <a href="#repeating"><code>repeating</code></a> as true, and the period is null,
  then the period will automatically be set to 20 minutes.
  Each service is registered with a <code>NamespacedKey</code>,
- to allow for easy identification within the associated <a href="../simplexss/ServicePool.html" title="class in io.github.simplex.simplexss"><code>ServicePool</code></a>.</div>
+ to allow for easy identification within the associated <a href="../simplexss/ServicePool.html" title="class in io.github.simplexdevelopment.scheduler"><code>ServicePool</code></a>.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>parentPool</code> - The <a href="../simplexss/ServicePool.html" title="class in io.github.simplex.simplexss"><code>ServicePool</code></a> which this service is executing on.</dd>
+<dd><code>parentPool</code> - The <a href="../simplexss/ServicePool.html" title="class in io.github.simplexdevelopment.scheduler"><code>ServicePool</code></a> which this service is executing on.</dd>
 <dd><code>service_name</code> - A namespaced key which can be used to identify the service.</dd>
 <dd><code>delay</code> - A specified amount of time (in ticks) to wait before the service runs.</dd>
 <dd><code>period</code> - How long the service should wait between service executions (in ticks).</dd>
@@ -361,10 +361,10 @@ implements <a href="IService.html" title="interface in io.github.simplex.api">IS
 </section>
 </li>
 <li>
-<section class="detail" id="&lt;init&gt;(io.github.simplex.simplexss.ServicePool,org.bukkit.NamespacedKey,java.lang.Long,java.lang.Long,java.lang.Boolean,java.lang.Boolean)">
+<section class="detail" id="&lt;init&gt;(io.github.simplexdevelopment.scheduler.ServicePool,org.bukkit.NamespacedKey,java.lang.Long,java.lang.Long,java.lang.Boolean,java.lang.Boolean)">
 <h3>ExecutableService</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">ExecutableService</span><wbr><span class="parameters">(@Nullable
- @Nullable <a href="../simplexss/ServicePool.html" title="class in io.github.simplex.simplexss">ServicePool</a>&nbsp;parentPool,
+ @Nullable <a href="../simplexss/ServicePool.html" title="class in io.github.simplexdevelopment.scheduler">ServicePool</a>&nbsp;parentPool,
  @NotNull
  @NotNull org.bukkit.NamespacedKey&nbsp;service_name,
  @Nullable
@@ -381,10 +381,10 @@ implements <a href="IService.html" title="interface in io.github.simplex.api">IS
  however if you have flagged <a href="#repeating"><code>repeating</code></a> as true, and the period is null,
  then the period will automatically be set to 20 minutes.
  Each service is registered with a <code>NamespacedKey</code>,
- to allow for easy identification within the associated <a href="../simplexss/ServicePool.html" title="class in io.github.simplex.simplexss"><code>ServicePool</code></a>.</div>
+ to allow for easy identification within the associated <a href="../simplexss/ServicePool.html" title="class in io.github.simplexdevelopment.scheduler"><code>ServicePool</code></a>.</div>
 <dl class="notes">
 <dt>Parameters:</dt>
-<dd><code>parentPool</code> - The <a href="../simplexss/ServicePool.html" title="class in io.github.simplex.simplexss"><code>ServicePool</code></a> which this service is executing on.</dd>
+<dd><code>parentPool</code> - The <a href="../simplexss/ServicePool.html" title="class in io.github.simplexdevelopment.scheduler"><code>ServicePool</code></a> which this service is executing on.</dd>
 <dd><code>service_name</code> - A namespaced key which can be used to identify the service.</dd>
 <dd><code>delay</code> - A specified amount of time (in ticks) to wait before the service runs.</dd>
 <dd><code>period</code> - How long the service should wait between service executions (in ticks).</dd>
@@ -407,7 +407,7 @@ implements <a href="IService.html" title="interface in io.github.simplex.api">IS
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">org.bukkit.NamespacedKey</span>&nbsp;<span class="element-name">getNamespacedKey</span>()</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="IService.html#getNamespacedKey()">getNamespacedKey</a></code>&nbsp;in interface&nbsp;<code><a href="IService.html" title="interface in io.github.simplex.api">IService</a></code></dd>
+<dd><code><a href="IService.html#getNamespacedKey()">getNamespacedKey</a></code>&nbsp;in interface&nbsp;<code><a href="IService.html" title="interface in io.github.simplexdevelopment.api">IService</a></code></dd>
 <dt>Returns:</dt>
 <dd>The NamespacedKey of this service.</dd>
 </dl>
@@ -419,7 +419,7 @@ implements <a href="IService.html" title="interface in io.github.simplex.api">IS
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">long</span>&nbsp;<span class="element-name">getDelay</span>()</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="IService.html#getDelay()">getDelay</a></code>&nbsp;in interface&nbsp;<code><a href="IService.html" title="interface in io.github.simplex.api">IService</a></code></dd>
+<dd><code><a href="IService.html#getDelay()">getDelay</a></code>&nbsp;in interface&nbsp;<code><a href="IService.html" title="interface in io.github.simplexdevelopment.api">IService</a></code></dd>
 <dt>Returns:</dt>
 <dd>How long the service should wait before executing the first time.</dd>
 </dl>
@@ -431,7 +431,7 @@ implements <a href="IService.html" title="interface in io.github.simplex.api">IS
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">long</span>&nbsp;<span class="element-name">getPeriod</span>()</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="IService.html#getPeriod()">getPeriod</a></code>&nbsp;in interface&nbsp;<code><a href="IService.html" title="interface in io.github.simplex.api">IService</a></code></dd>
+<dd><code><a href="IService.html#getPeriod()">getPeriod</a></code>&nbsp;in interface&nbsp;<code><a href="IService.html" title="interface in io.github.simplexdevelopment.api">IService</a></code></dd>
 <dt>Returns:</dt>
 <dd>How long the service should wait between subsequent executions.</dd>
 </dl>
@@ -443,7 +443,7 @@ implements <a href="IService.html" title="interface in io.github.simplex.api">IS
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isPeriodic</span>()</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="IService.html#isPeriodic()">isPeriodic</a></code>&nbsp;in interface&nbsp;<code><a href="IService.html" title="interface in io.github.simplex.api">IService</a></code></dd>
+<dd><code><a href="IService.html#isPeriodic()">isPeriodic</a></code>&nbsp;in interface&nbsp;<code><a href="IService.html" title="interface in io.github.simplexdevelopment.api">IService</a></code></dd>
 <dt>Returns:</dt>
 <dd>If the service should be scheduled for repeated executions or not.</dd>
 </dl>
@@ -482,12 +482,12 @@ implements <a href="IService.html" title="interface in io.github.simplex.api">IS
 <li>
 <section class="detail" id="getParentPool()">
 <h3>getParentPool</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">reactor.core.publisher.Mono&lt;<a href="../simplexss/ServicePool.html" title="class in io.github.simplex.simplexss">ServicePool</a>&gt;</span>&nbsp;<span class="element-name">getParentPool</span>()</div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">reactor.core.publisher.Mono&lt;<a href="../simplexss/ServicePool.html" title="class in io.github.simplexdevelopment.scheduler">ServicePool</a>&gt;</span>&nbsp;<span class="element-name">getParentPool</span>()</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="IService.html#getParentPool()">getParentPool</a></code>&nbsp;in interface&nbsp;<code><a href="IService.html" title="interface in io.github.simplex.api">IService</a></code></dd>
+<dd><code><a href="IService.html#getParentPool()">getParentPool</a></code>&nbsp;in interface&nbsp;<code><a href="IService.html" title="interface in io.github.simplexdevelopment.api">IService</a></code></dd>
 <dt>Returns:</dt>
-<dd>The <a href="../simplexss/ServicePool.html" title="class in io.github.simplex.simplexss"><code>ServicePool</code></a> which this service is executing on.</dd>
+<dd>The <a href="../simplexss/ServicePool.html" title="class in io.github.simplexdevelopment.scheduler"><code>ServicePool</code></a> which this service is executing on.</dd>
 </dl>
 </section>
 </li>

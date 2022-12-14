@@ -1,9 +1,9 @@
-package io.github.simplex.impl;
+package io.github.simplexdevelopment.impl;
 
-import io.github.simplex.api.IService;
-import io.github.simplex.simplexss.SchedulingSystem;
-import io.github.simplex.simplexss.ServiceManager;
-import io.github.simplex.simplexss.ServicePool;
+import io.github.simplexdevelopment.api.IService;
+import io.github.simplexdevelopment.scheduler.SchedulingSystem;
+import io.github.simplexdevelopment.scheduler.ServiceManager;
+import io.github.simplexdevelopment.scheduler.ServicePool;
 import org.bukkit.plugin.java.JavaPlugin;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
@@ -17,8 +17,7 @@ public class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        ServiceManager serviceManager = new ServiceManager();
-        this.scheduler = new SchedulingSystem<>(serviceManager, this);
+        this.scheduler = new SchedulingSystem<>(this);
         IService service = new ServiceImpl(this);
         service.getParentPool().subscribe(element -> disposables = element.startServices());
     }
@@ -28,7 +27,6 @@ public class Main extends JavaPlugin {
         scheduler.getServiceManager().subscribe(manager -> {
             manager.getServicePools().doOnEach(signal -> Objects.requireNonNull(signal.get())
                     .stopServices(disposables)
-                    .subscribeOn(scheduler.getMainSchedulerThread())
                     .subscribe());
         });
     }

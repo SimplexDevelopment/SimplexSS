@@ -1,8 +1,9 @@
-package io.github.simplex.simplexss;
+package io.github.simplexdevelopment.scheduler;
 
-import io.github.simplex.api.ISchedule;
-import io.github.simplex.api.IService;
+import io.github.simplexdevelopment.api.ISchedule;
+import io.github.simplexdevelopment.api.IService;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import reactor.core.publisher.Mono;
@@ -17,19 +18,18 @@ public final class SchedulingSystem<T extends JavaPlugin> implements ISchedule {
     private final ServiceManager serviceManager;
     private final T plugin;
     private final Set<ServicePool> repeatingPools;
-    private final Scheduler mainScheduler;
+    private final ReactorBukkitScheduler mainScheduler;
 
     /**
      * Creates a new instance of the scheduling system. This is used to manage the scheduling of services.
      *
-     * @param serviceManager The service manager to use for this scheduling system.
      * @param plugin         The plugin to use for this scheduling system. This should be an instance of your plugin.
      */
-    public SchedulingSystem(@NotNull ServiceManager serviceManager, T plugin) {
-        this.serviceManager = serviceManager;
+    public SchedulingSystem(T plugin) {
+        this.serviceManager = new ServiceManager();
         this.plugin = plugin;
         this.repeatingPools = new HashSet<>();
-        this.mainScheduler = Schedulers.boundedElastic();
+        this.mainScheduler = new ReactorBukkitScheduler(plugin, plugin.getServer().getScheduler());
     }
 
     /**
@@ -84,7 +84,7 @@ public final class SchedulingSystem<T extends JavaPlugin> implements ISchedule {
      * @return The main thread which the scheduling system operates on.
      */
     @Contract(pure = true)
-    public Scheduler getMainSchedulerThread() {
+    public ReactorBukkitScheduler getMainScheduler() {
         return mainScheduler;
     }
 }

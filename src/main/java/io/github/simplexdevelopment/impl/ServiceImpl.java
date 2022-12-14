@@ -1,8 +1,8 @@
-package io.github.simplex.impl;
+package io.github.simplexdevelopment.impl;
 
-import io.github.simplex.api.ExecutableService;
-import io.github.simplex.api.IService;
-import io.github.simplex.simplexss.ServicePool;
+import io.github.simplexdevelopment.api.ExecutableService;
+import io.github.simplexdevelopment.api.IService;
+import io.github.simplexdevelopment.scheduler.ServicePool;
 import org.bukkit.plugin.java.JavaPlugin;
 import reactor.core.publisher.Mono;
 
