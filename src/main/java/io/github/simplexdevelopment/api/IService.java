@@ -1,22 +1,12 @@
 package io.github.simplexdevelopment.api;
 
 import io.github.simplexdevelopment.scheduler.ServicePool;
-import org.bukkit.NamespacedKey;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import reactor.core.publisher.Mono;
 
-public interface IService extends Runnable {
-    @Contract(" -> new")
-    static @NotNull NamespacedKey getDefaultNamespacedKey() {
-        return new NamespacedKey("simplex_ss", "default_service_name");
-    }
-
-    /**
-     * @return The NamespacedKey of this service.
-     */
-    NamespacedKey getNamespacedKey();
+public interface IService extends Runnable, Identifier {
 
     /**
      * @return If the service should be scheduled for repeated executions or not.
@@ -60,24 +50,16 @@ public interface IService extends Runnable {
      */
     Mono<ServicePool> getParentPool();
 
+    /**
+     * Sets the parent pool for this service.
+     *
+     * @param servicePool The service pool to attach this service to.
+     * @return An encapsulated Mono object representing the set operation.
+     */
+    Mono<Void> setParentPool(ServicePool servicePool);
+
     @Override
     default void run() {
-        start().subscribeOn(getParentPool()
-                    .map(ServicePool::getScheduler)
-                    .blockOptional()
-                    .orElseThrow(InvalidServicePoolException.supplyException()))
-                .subscribe();
-    }
-
-    /**
-     * This is an easy static call for creating a new namespaced key for services and service pools.
-     *
-     * @param space The namespace of the service.
-     * @param key The key name of the service.
-     * @return A NamespacedKey object representing the service.
-     */
-    @Contract("_, _ -> new")
-    static @NotNull NamespacedKey newNamespacedKey(String space, String key) {
-        return new NamespacedKey(space, key);
+        start().subscribe();
     }
 }

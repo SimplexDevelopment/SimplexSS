@@ -1,7 +1,8 @@
 package io.github.simplexdevelopment.api;
 
 import io.github.simplexdevelopment.scheduler.ServiceManager;
-import io.github.simplexdevelopment.scheduler.ServicePool;
+import org.jetbrains.annotations.NotNull;
+import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
 
 public interface ISchedule {
@@ -12,11 +13,12 @@ public interface ISchedule {
     Mono<ServiceManager> getServiceManager();
 
     /**
+     * Queues a service to be executed in a service pool.
+     *
      * @param service The service to use to locate the associated service pool and queue the service for execution.
-     * @return A Mono<ServicePool> that can be used to prepare the service for execution within it's associated service pool.
-     * If the service has no associated pool, a new pool will be created.
+     * @return A Mono<Disposable> that can be used to cancel the service.
      */
-    Mono<ServicePool> queue(IService service);
+    @NotNull Mono<Disposable> queue(@NotNull IService service);
 
     /**
      * @param service The service to run once.

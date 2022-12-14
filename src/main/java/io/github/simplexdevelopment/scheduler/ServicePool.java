@@ -1,7 +1,6 @@
 package io.github.simplexdevelopment.scheduler;
 
 import io.github.simplexdevelopment.api.IService;
-import org.bukkit.NamespacedKey;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -18,9 +17,9 @@ import java.util.concurrent.TimeUnit;
 
 public final class ServicePool {
     /**
-     * The default {@link NamespacedKey} used to identify unmarked services. This will cause errors if left unchecked.
+     * The default {@link String} used to identify unmarked services. This will cause errors if left unchecked.
      */
-    private static final NamespacedKey DEFAULT = new NamespacedKey("simplex_ss", "default_service_pool");
+    private static final String DEFAULT = "default_service_pool";
     /**
      * A collection of services related to this service pool.
      */
@@ -30,9 +29,9 @@ public final class ServicePool {
      */
     private final Scheduler scheduler;
     /**
-     * The key used to identify this service pool.
+     * The name used to identify this service pool.
      */
-    private final NamespacedKey name;
+    private final String name;
 
     /**
      * This will create a new instance of a Service Pool with a {@link Scheduler} as its main scheduler.
@@ -41,7 +40,7 @@ public final class ServicePool {
      * @param name          The name of this service pool.
      * @param multithreaded Whether this service pool should be multithreaded, or operate upon a single thread.
      */
-    public ServicePool(NamespacedKey name, boolean multithreaded) {
+    public ServicePool(String name, boolean multithreaded) {
         this.name = name;
         this.associatedServices = new HashSet<>();
         if (multithreaded) {
@@ -57,7 +56,7 @@ public final class ServicePool {
      *
      * @param name The name of this service pool.
      */
-    public ServicePool(NamespacedKey name, JavaPlugin plugin) {
+    public ServicePool(String name, JavaPlugin plugin) {
         this.name = name;
         this.associatedServices = new HashSet<>();
         this.scheduler = new ReactorBukkitScheduler(plugin);
@@ -66,7 +65,7 @@ public final class ServicePool {
     /**
      * @return The default namespaced key to use if one is not assigned.
      */
-    static NamespacedKey getDefaultNamespacedKey() {
+    static String getDefaultNamespacedKey() {
         return DEFAULT;
     }
 
@@ -140,7 +139,7 @@ public final class ServicePool {
      * @param disposable   A {@link Disposable} object which contains the service that should be disposed.
      * @return A {@link Mono<Void>} object which can be used to stop the service.
      */
-    public @NotNull Mono<Void> stopService(@NotNull NamespacedKey service_name, @Nullable Mono<Disposable> disposable) {
+    public @NotNull Mono<Void> stopService(@NotNull String service_name, @Nullable Mono<Disposable> disposable) {
         getService(service_name).doOnNext(IService::stop).subscribe();
         if (disposable != null) {
             disposable.doOnNext(Disposable::dispose).subscribe();
@@ -152,9 +151,9 @@ public final class ServicePool {
      * @param service_name The name of the service to get.
      * @return A {@link Mono} object which contains the service.
      */
-    public @NotNull Mono<IService> getService(NamespacedKey service_name) {
+    public @NotNull Mono<IService> getService(String service_name) {
         return Flux.fromIterable(getAssociatedServices())
-                .filter(service -> service.getNamespacedKey().equals(service_name))
+                .filter(service -> service.getName().equals(service_name))
                 .next();
     }
 

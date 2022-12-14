@@ -1,7 +1,6 @@
 package io.github.simplexdevelopment.scheduler;
 
 import io.github.simplexdevelopment.api.IService;
-import org.bukkit.NamespacedKey;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import reactor.core.publisher.Flux;
@@ -12,6 +11,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 public final class ServiceManager {
+    /**
+     * A set of {@link ServicePool}s which are currently active.
+     */
     private final Set<ServicePool> servicePools;
 
     /**
@@ -32,7 +34,7 @@ public final class ServiceManager {
      * This service pool will execute each service consecutively within a singular non-blocking thread.
      */
     @Contract(pure = true, value = "_, _ -> new")
-    public @NotNull Mono<ServicePool> createServicePool(NamespacedKey poolName, IService... services) {
+    public @NotNull Mono<ServicePool> createServicePool(String poolName, IService... services) {
         ServicePool pool = new ServicePool(poolName, false);
         Flux.fromIterable(Arrays.asList(services)).doOnEach(s -> pool.addService(s.get()));
         return Mono.just(pool);
@@ -45,7 +47,7 @@ public final class ServiceManager {
      * This service pool will execute each service across a set of non-blocking threads.
      */
     @Contract(pure = true, value = "_, _ -> new")
-    public @NotNull Mono<ServicePool> multithreadedServicePool(NamespacedKey name, IService... services) {
+    public @NotNull Mono<ServicePool> multithreadedServicePool(String name, IService... services) {
         ServicePool pool = new ServicePool(name, true);
         Flux.fromIterable(Arrays.asList(services)).doOnEach(s -> pool.addService(s.get()));
         return Mono.just(pool);
@@ -60,7 +62,7 @@ public final class ServiceManager {
      * or by using {@link ServicePool#addService(IService)}.
      */
     @Contract(pure = true, value = "_, _ -> new")
-    public @NotNull Mono<ServicePool> emptyServicePool(NamespacedKey poolName, boolean multithreaded) {
+    public @NotNull Mono<ServicePool> emptyServicePool(String poolName, boolean multithreaded) {
         ServicePool pool = new ServicePool(poolName, multithreaded);
         return Mono.just(pool);
     }

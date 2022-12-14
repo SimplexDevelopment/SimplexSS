@@ -40,7 +40,7 @@ public final class ReactorBukkitScheduler
      * @return A disposable that can be used to cancel the task.
      */
     @Override
-    public @NotNull Disposable schedule(@NotNull Runnable task, long delay, @Nullable TimeUnit unit) {
+    public @NotNull Disposable schedule(@NotNull Runnable task, long delay, @Deprecated @Nullable TimeUnit unit) {
         return new BukkitDisposable(scheduler.runTaskLater(plugin, task, delay));
     }
 
@@ -56,7 +56,7 @@ public final class ReactorBukkitScheduler
      * @return A disposable that can be used to cancel the task.
      */
     @Override
-    public @NotNull Disposable schedulePeriodically(@NotNull Runnable task, long initialDelay, long period, @Nullable TimeUnit unit) {
+    public @NotNull Disposable schedulePeriodically(@NotNull Runnable task, long initialDelay, long period, @Deprecated @Nullable TimeUnit unit) {
         if (period <= 0L) {
             throw new IllegalArgumentException("Period must be greater than 0L");
         }
@@ -78,6 +78,7 @@ public final class ReactorBukkitScheduler
      * This method does nothing and is unused.
      */
     @Override
+    @Deprecated
     public void dispose() {
     }
 }

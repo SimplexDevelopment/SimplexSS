@@ -1,7 +1,6 @@
 package io.github.simplexdevelopment.impl;
 
-import io.github.simplexdevelopment.api.ExecutableService;
-import io.github.simplexdevelopment.api.IService;
+import io.github.simplexdevelopment.scheduler.ExecutableService;
 import io.github.simplexdevelopment.scheduler.ServicePool;
 import org.bukkit.plugin.java.JavaPlugin;
 import reactor.core.publisher.Mono;
@@ -9,8 +8,8 @@ import reactor.core.publisher.Mono;
 public class ServiceImpl extends ExecutableService {
     private final Main plugin;
 
-    public ServiceImpl(Main plugin) {
-        super(plugin.pool, IService.getDefaultNamespacedKey(), 0L, 20 * 60 * 20L, true, false);
+    public ServiceImpl(Main plugin, ServicePool pool) {
+        super(pool, "default", 0L, 20 * 60 * 20L, true, false);
         this.plugin = plugin;
     }
 
@@ -33,13 +32,5 @@ public class ServiceImpl extends ExecutableService {
     @Override
     public Main getPlugin() {
         return plugin;
-    }
-
-    @Override
-    public Mono<ServicePool> getParentPool() {
-        return getPlugin()
-                .getScheduler()
-                .getServiceManager()
-                .flatMap(manager -> manager.getAssociatedServicePool(this));
     }
 }

@@ -1,7 +1,6 @@
-package io.github.simplexdevelopment.api;
+package io.github.simplexdevelopment.scheduler;
 
-import io.github.simplexdevelopment.scheduler.ServicePool;
-import org.bukkit.NamespacedKey;
+import io.github.simplexdevelopment.api.IService;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -10,43 +9,75 @@ import reactor.core.publisher.Mono;
 import java.util.Objects;
 
 public abstract class ExecutableService implements IService {
-    private final NamespacedKey service_name;
+    /**
+     * The name of the service.
+     */
+    private final String service_name;
+    /**
+     * How long the service should wait before executing the first time.
+     */
     private final long delay;
+    /**
+     * How long the service should wait between executions.
+     */
     private final long period;
+    /**
+     * If the service should be executed once or continuously.
+     */
     private final boolean repeating;
+    /**
+     * If the service should be allowed to stop while executing.
+     */
     private final boolean mayInterruptWhenRunning;
-
-    private boolean cancelled = false;
+    /**
+     * The service's execution thread.
+     */
     private ServicePool parentPool;
+    /**
+     * Whether the service has been cancelled or not.
+     */
+    private boolean cancelled = false;
 
     /**
      * Creates a new instance of an executable service.
-     * Each service is registered with a {@link NamespacedKey},
+     * Each service is registered with a {@link String},
      * to allow for easy identification within the associated {@link ServicePool}.
      *
      * @param service_name A namespaced key which can be used to identify the service.
      */
-    public ExecutableService(@NotNull NamespacedKey service_name) {
-        this((new ServicePool(IService.newNamespacedKey("", ""), false)), service_name, 0L, 0L, false, false);
+    public ExecutableService(@NotNull String service_name) {
+        this((new ServicePool("defaultPool" + SchedulingSystem.denom, false)),
+                service_name,
+                0L,
+                0L,
+                false,
+                false);
+
+        SchedulingSystem.denom++;
     }
 
     /**
      * Creates a new instance of an executable service.
-     * Each service is registered with a {@link NamespacedKey},
+     * Each service is registered with a {@link String},
      * to allow for easy identification within the associated {@link ServicePool}.
      *
      * @param parentPool   The {@link ServicePool} which this service is executing on.
      * @param service_name A namespaced key which can be used to identify the service.
      */
-    public ExecutableService(@Nullable ServicePool parentPool, @NotNull NamespacedKey service_name) {
-        this(parentPool, service_name, 0L, 0L, false, false);
+    public ExecutableService(@Nullable ServicePool parentPool, @NotNull String service_name) {
+        this(parentPool,
+                service_name,
+                0L,
+                0L,
+                false,
+                false);
     }
 
     /**
      * Creates a new instance of an executable service.
      * The timings are measured in ticks (20 ticks per second).
      * You do not need to explicitly define a delay.
-     * Each service is registered with a {@link NamespacedKey},
+     * Each service is registered with a {@link String},
      * to allow for easy identification within the associated {@link ServicePool}.
      *
      * @param parentPool   The {@link ServicePool} which this service is executing on.
@@ -55,9 +86,14 @@ public abstract class ExecutableService implements IService {
      */
     public ExecutableService(
             @Nullable ServicePool parentPool,
-            @NotNull NamespacedKey service_name,
+            @NotNull String service_name,
             @Nullable Long delay) {
-        this(parentPool, service_name, delay, 0L, false, false);
+        this(parentPool,
+                service_name,
+                delay,
+                0L,
+                false,
+                false);
     }
 
     /**
@@ -66,7 +102,7 @@ public abstract class ExecutableService implements IService {
      * You do not need to explicitly define a delay or a period,
      * however if you have flagged {@link #repeating} as true, and the period is null,
      * then the period will automatically be set to 20 minutes.
-     * Each service is registered with a {@link NamespacedKey},
+     * Each service is registered with a {@link String},
      * to allow for easy identification within the associated {@link ServicePool}.
      *
      * @param parentPool   The {@link ServicePool} which this service is executing on.
@@ -77,11 +113,15 @@ public abstract class ExecutableService implements IService {
      */
     public ExecutableService(
             @Nullable ServicePool parentPool,
-            @NotNull NamespacedKey service_name,
+            @NotNull String service_name,
             @NotNull Long delay,
             @NotNull Long period,
             @NotNull Boolean repeating) {
-        this(parentPool, service_name, delay, period, repeating, false);
+        this(parentPool,
+                service_name,
+                delay, period,
+                repeating,
+                false);
     }
 
     /**
@@ -90,7 +130,7 @@ public abstract class ExecutableService implements IService {
      * You do not need to explicitly define a delay or a period,
      * however if you have flagged {@link #repeating} as true, and the period is null,
      * then the period will automatically be set to 20 minutes.
-     * Each service is registered with a {@link NamespacedKey},
+     * Each service is registered with a {@link String},
      * to allow for easy identification within the associated {@link ServicePool}.
      *
      * @param parentPool              The {@link ServicePool} which this service is executing on.
@@ -102,7 +142,7 @@ public abstract class ExecutableService implements IService {
      */
     public ExecutableService(
             @Nullable ServicePool parentPool,
-            @NotNull NamespacedKey service_name,
+            @NotNull String service_name,
             @Nullable Long delay,
             @Nullable Long period,
             @NotNull Boolean repeating,
@@ -113,11 +153,6 @@ public abstract class ExecutableService implements IService {
         this.period = Objects.requireNonNullElse(period, (20L * 60L) * 20L);
         this.mayInterruptWhenRunning = mayInterruptWhenRunning;
         this.parentPool = parentPool;
-    }
-
-    @Override
-    public NamespacedKey getNamespacedKey() {
-        return service_name;
     }
 
     @Override
@@ -172,5 +207,15 @@ public abstract class ExecutableService implements IService {
     @Override
     public Mono<ServicePool> getParentPool() {
         return Mono.just(parentPool);
+    }
+
+    @Override
+    public String getName() {
+        return service_name;
+    }
+
+    @Override
+    public Mono<Void> setParentPool(ServicePool servicePool) {
+        return Mono.just(servicePool).doOnNext(pool -> this.parentPool = pool).then();
     }
 }

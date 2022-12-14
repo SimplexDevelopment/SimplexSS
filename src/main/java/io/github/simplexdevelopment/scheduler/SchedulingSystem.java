@@ -6,38 +6,37 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Scheduler;
-import reactor.core.scheduler.Schedulers;
-
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
 
 public final class SchedulingSystem<T extends JavaPlugin> implements ISchedule {
+    /**
+     * A denominator to use when registering default service pool names.
+     */
+    static int denom = 0;
+    /**
+     * The service manager to use for controlling service pools.
+     */
     private final ServiceManager serviceManager;
+    /**
+     * The plugin to use for registering tasks. This should be an instance of your plugin.
+     */
     private final T plugin;
-    private final Set<ServicePool> repeatingPools;
+    /**
+     * The main scheduler which this system runs on. This is an abstraction of the {@link BukkitScheduler},
+     * and as a result runs on the Main server thread.
+     */
     private final ReactorBukkitScheduler mainScheduler;
 
     /**
      * Creates a new instance of the scheduling system. This is used to manage the scheduling of services.
      *
-     * @param plugin         The plugin to use for this scheduling system. This should be an instance of your plugin.
+     * @param plugin The plugin to use for this scheduling system. This should be an instance of your plugin.
      */
     public SchedulingSystem(T plugin) {
         this.serviceManager = new ServiceManager();
         this.plugin = plugin;
-        this.repeatingPools = new HashSet<>();
         this.mainScheduler = new ReactorBukkitScheduler(plugin);
-    }
-
-    /**
-     * @return A set of {@link ServicePool}s which contain repeating services.
-     */
-    @Contract(pure = true)
-    public Set<ServicePool> getRepeatingPools() {
-        return repeatingPools;
     }
 
     @Override
@@ -47,20 +46,19 @@ public final class SchedulingSystem<T extends JavaPlugin> implements ISchedule {
 
     @Override
     @NotNull
-    public Mono<ServicePool> queue(@NotNull IService service) {
-        return getServiceManager().flatMap(serviceManager -> {
-            Mono<ServicePool> pool = serviceManager.getAssociatedServicePool(service);
-            return pool.defaultIfEmpty(Objects.requireNonNull(serviceManager
-                    .createServicePool(ServicePool.getDefaultNamespacedKey(), service)
-                    .block()));
-        });
+    public Mono<Disposable> queue(@NotNull IService service) {
+        return getServiceManager()
+                .flatMap(manager -> manager.getAssociatedServicePool(service))
+                .flatMap(pool -> pool.queueService(service));
     }
 
     @Override
     public @NotNull Mono<Void> runOnce(IService service) {
-        return Mono.just(service).doOnNext(s -> {
-            s.start().then(s.stop()).subscribe();
-        }).then();
+        return Mono.just(service)
+                .doOnNext(s -> s.start()
+                        .then(s.stop())
+                        .subscribe())
+                .then();
     }
 
     @Override
