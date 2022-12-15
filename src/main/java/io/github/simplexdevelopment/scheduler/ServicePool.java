@@ -186,11 +186,13 @@ public final class ServicePool implements Identifier {
      * @return A {@link Mono<Void>} object which can be used to stop the service.
      */
     public @NotNull Mono<Void> stopService(@NotNull String service_name, @Nullable Mono<Disposable> disposable) {
-        getService(service_name).doOnNext(IService::stop).subscribe();
-        if (disposable != null) {
-            disposable.doOnNext(Disposable::dispose).subscribe();
-        }
-        return Mono.empty();
+        return Mono.create(sink -> {
+            getService(service_name).doOnNext(IService::stop).subscribe();
+            if (disposable != null) {
+                disposable.doOnNext(Disposable::dispose).subscribe();
+            }
+            sink.success();
+        });
     }
 
     /**
@@ -223,7 +225,7 @@ public final class ServicePool implements Identifier {
      */
     public @NotNull Mono<ServicePool> recycle() {
         this.getAssociatedServices().clear();
-        return Mono.just(this);
+        return Mono.create(sink -> sink.success(this));
     }
 
     /**

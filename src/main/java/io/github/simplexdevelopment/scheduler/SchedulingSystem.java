@@ -102,11 +102,7 @@ public final class SchedulingSystem<T extends JavaPlugin> implements ISchedule {
 
     @Override
     public @NotNull Mono<Void> runOnce(IService service) {
-        return Mono.just(service)
-                .doOnNext(s -> s.start()
-                        .then(s.stop())
-                        .subscribe())
-                .then();
+        return Mono.create(sink -> service.start().then(service.stop()).subscribe(sink::success));
     }
 
     @Override

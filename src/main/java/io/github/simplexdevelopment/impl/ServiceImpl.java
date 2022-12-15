@@ -26,7 +26,6 @@ package io.github.simplexdevelopment.impl;
 
 import io.github.simplexdevelopment.scheduler.ExecutableService;
 import io.github.simplexdevelopment.scheduler.ServicePool;
-import org.bukkit.plugin.java.JavaPlugin;
 import reactor.core.publisher.Mono;
 
 public class ServiceImpl extends ExecutableService {
@@ -39,18 +38,18 @@ public class ServiceImpl extends ExecutableService {
 
     @Override
     public Mono<Void> start() {
-        return Mono.just(plugin)
-                .map(JavaPlugin::getLogger)
-                .doOnNext(l -> l.info("The service has executed successfully!"))
-                .then();
+        return Mono.create(sink -> {
+            plugin.getLogger().info("The service has started successfully!");
+            sink.success();
+        });
     }
 
     @Override
     public Mono<Void> stop() {
-        return Mono.just(plugin)
-                .map(JavaPlugin::getLogger)
-                .doOnNext(l -> l.info("The service has stopped"))
-                .then();
+        return Mono.create(sink -> {
+            plugin.getLogger().info("The service has stopped successfully!");
+            sink.success();
+        });
     }
 
     @Override

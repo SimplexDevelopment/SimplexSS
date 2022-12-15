@@ -181,7 +181,15 @@ public abstract class ExecutableService implements IService {
         this.delay = Objects.requireNonNullElse(delay, 0L);
         this.period = Objects.requireNonNullElse(period, (20L * 60L) * 20L);
         this.mayInterruptWhenRunning = mayInterruptWhenRunning;
-        this.parentPool = parentPool;
+
+        if (parentPool == null) {
+            this.parentPool = new ServicePool("defaultPool" + SchedulingSystem.denom, false);
+            SchedulingSystem.denom++;
+        } else {
+            this.parentPool = parentPool;
+        }
+
+        this.parentPool.getAssociatedServices().add(this);
     }
 
     @Override
@@ -245,6 +253,9 @@ public abstract class ExecutableService implements IService {
 
     @Override
     public Mono<Void> setParentPool(ServicePool servicePool) {
-        return Mono.just(servicePool).doOnNext(pool -> this.parentPool = pool).then();
+        return Mono.create(sink -> {
+            this.parentPool = servicePool;
+            sink.success();
+        });
     }
 }
