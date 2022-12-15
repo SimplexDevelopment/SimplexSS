@@ -4,7 +4,7 @@
 
  A reactive non blocking api for scheduling runnable tasks (called services)
  
-# Using SimplexSS in your project
+# Adding SimplexSS to your project
 
  In order to use SimplexSS in your project, you need to add the jitpack repository to your build.gradle or pom.xml file.
  
@@ -64,4 +64,43 @@
  dependencies {
     shadow 'com.github.SimplexDevelopment:SimplexSS:1.0.1-SNAPSHOT'
  }
+ ```
+
+# Using SimplexSS
+
+ To use Simplex Scheduling System, the first thing you need to do is initialize a new instance of the Scheduling System.
+
+ ```Java
+ private SchedulingSystem<YourPlugin> scheduler;
+ 
+ @Override
+ public void onEnable() {
+     this.scheduler = new SchedulingSystem<>(this);
+ }
+ ```
+ 
+ Then, you should use the Service Manager to create some new service pools. You can use `ServicePool#emptyBukkitServicePool(String, JavaPlugin)` for a service pool which will operate on the main server thread, or you can use `ServicePool#emptyServicePool(String, boolean)` for a completely separate, non-blocking scheduler which can be either singular or multithreaded. You should also use the service manager stream to register your services, and assign a Flux<Disposable> object so we can cancel the services later on in `JavaPlugin#onDisable()`.
+ 
+ ```Java
+ private Flux<Disposable> disposables;
+ 
+ @Override
+ public void onEnable() {
+     this.scheduler = new SchedulingSystem<>(this);
+     
+     YourFirstService firstService;
+     YourSecondService secondService;
+     YourThirdService thirdService;
+     
+     scheduler.getServiceManager().subscribe(manager -> {
+         manager.emptyBukkitServicePool("pool_name", this).subscribe(pool -> {
+             Set<Disposable> dispos = new HashSet<>();
+             firstService = new YourFirstService(pool, "first_service_name");
+             secondService = new YourSecondService(pool, "second_service_name", 20 * 60L);
+             thirdService = new YourThirdService(pool, "third_service_name", 20 * 60L, 20 * 60 * 10L, true, false);
+             scheduler.queue(firstService).subscribe(dispos::add);
+             scheduler.queue(secondService).subscribe(dispos::add);
+             scheduler.queue(thirdService).subscribe(dispos::add);
+         });
+     });
  ```
