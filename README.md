@@ -2,7 +2,7 @@
 
  ![](https://img.shields.io/github/license/SimplexDevelopment/SimplexSS)
  ![](https://img.shields.io/github/languages/top/SimplexDevelopment/SimplexSS)
- ![](https://img.shields.io/github/workflow/status/SimplexDevelopment/SimplexSS/CodeQL/main) 
+ ![](https://img.shields.io/github/actions/workflow/status/SimplexDevelopment/SimplexSS/codeql.yml?branch=main) 
  ![](https://img.shields.io/github/v/release/SimplexDevelopment/SimplexSS?include_prereleases) 
  ![](https://jitpack.io/v/SimplexDevelopment/SimplexSS.svg)  
  ![](https://img.shields.io/github/issues/SimplexDevelopment/SimplexSS) 
