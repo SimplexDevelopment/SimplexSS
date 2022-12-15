@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'com.github.johnrengelman.shadow' version '7.1.2'
+    id 'maven-publish'
 }
 
 group = 'io.github.simplex'
@@ -20,11 +21,12 @@ repositories {
 
 dependencies {
     compileOnly 'io.papermc.paper:paper-api:1.19-R0.1-SNAPSHOT'
-    shadow 'io.projectreactor:reactor-core:3.4.19'
+    shadow 'io.projectreactor:reactor-core:3.4.24'
 }
 
 shadowJar {
-    relocate ('reactor', "io.github.simplex.reactor")
+    relocate('reactor', "io.github.simplex.reactor")
+    exclude('io.github.simplexdevelopment.impl')
 }
 
 def targetJavaVersion = 17
@@ -35,6 +37,8 @@ java {
     if (JavaVersion.current() < javaVersion) {
         toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
     }
+    withSourcesJar()
+    withJavadocJar()
 }
 
 tasks.withType(JavaCompile).configureEach {
@@ -50,4 +54,17 @@ processResources {
     filesMatching('plugin.yml') {
         expand props
     }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+}
+
+wrapper {
+    gradleVersion = '7.5.1'
+    distributionType = Wrapper.DistributionType.ALL
 }

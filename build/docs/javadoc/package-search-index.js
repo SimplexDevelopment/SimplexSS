@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"io.github.simplexdevelopment.api"},{"l":"io.github.simplexdevelopment.impl"},{"l":"io.github.simplexdevelopment.scheduler"}];updateSearchResults();
