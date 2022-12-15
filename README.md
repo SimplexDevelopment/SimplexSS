@@ -1,6 +1,13 @@
 # SimplexSS
 
- ![](https://img.shields.io/github/workflow/status/SimplexDevelopment/SimplexSS/CodeQL/main) ![](https://img.shields.io/github/v/release/SimplexDevelopment/SimplexSS?include_prereleases) ![](https://jitpack.io/v/SimplexDevelopment/SimplexSS.svg) ![](https://img.shields.io/github/license/SimplexDevelopment/SimplexSS) ![](https://img.shields.io/github/issues/SimplexDevelopment/SimplexSS) ![](https://img.shields.io/github/stars/SimplexDevelopment/SimplexSS?style=social) ![](https://img.shields.io/github/forks/SimplexDevelopment/SimplexSS?style=social) ![](https://img.shields.io/github/languages/top/SimplexDevelopment/SimplexSS)
+ ![](https://img.shields.io/github/license/SimplexDevelopment/SimplexSS)
+ ![](https://img.shields.io/github/languages/top/SimplexDevelopment/SimplexSS)
+ ![](https://img.shields.io/github/workflow/status/SimplexDevelopment/SimplexSS/CodeQL/main) 
+ ![](https://img.shields.io/github/v/release/SimplexDevelopment/SimplexSS?include_prereleases) 
+ ![](https://jitpack.io/v/SimplexDevelopment/SimplexSS.svg)  
+ ![](https://img.shields.io/github/issues/SimplexDevelopment/SimplexSS) 
+ ![](https://img.shields.io/github/stars/SimplexDevelopment/SimplexSS?style=social) 
+ ![](https://img.shields.io/github/forks/SimplexDevelopment/SimplexSS?style=social) 
 
  A reactive non blocking api for scheduling runnable tasks (called services)
  
