@@ -1,5 +1,5 @@
 name: SimplexSS
-version: '1.0.0'
+version: '1.0.1'
 main: io.github.simplex.simplexss.SimplexSS
 api-version: 1.19
 authors: [ SimplexDevelopment ]
