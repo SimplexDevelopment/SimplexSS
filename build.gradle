@@ -25,7 +25,7 @@ dependencies {
 }
 
 shadowJar {
-    relocate('reactor', "io.github.simplex.reactor")
+    relocate('reactor', "io.github.simplexdevelopment.reactor")
     exclude('io.github.simplexdevelopment.impl')
 }
 

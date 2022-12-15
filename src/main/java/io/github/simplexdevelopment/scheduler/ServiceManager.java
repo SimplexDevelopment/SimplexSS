@@ -1,6 +1,31 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2022 SimplexDevelopment
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package io.github.simplexdevelopment.scheduler;
 
 import io.github.simplexdevelopment.api.IService;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import reactor.core.publisher.Flux;
@@ -10,6 +35,15 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * The ServiceManager is a factory class for managing {@link ServicePool}s.
+ * You can use this class for easy creation of {@link ServicePool}s,
+ * as well as adding and removing {@link IService}s from the pool. You can create an
+ * {@link #emptyServicePool(String, boolean)}, {@link #createServicePool(String, IService...)},
+ * and even create a {@link #multithreadedServicePool(String, IService...)}.
+ *
+ * @author SimplexDevelopment
+ */
 public final class ServiceManager {
     /**
      * A set of {@link ServicePool}s which are currently active.
@@ -37,6 +71,36 @@ public final class ServiceManager {
     public @NotNull Mono<ServicePool> createServicePool(String poolName, IService... services) {
         ServicePool pool = new ServicePool(poolName, false);
         Flux.fromIterable(Arrays.asList(services)).doOnEach(s -> pool.addService(s.get()));
+        servicePools.add(pool);
+        return Mono.just(pool);
+    }
+
+    /**
+     * @param poolName The name of the service pool.
+     * @param plugin   The plugin which will be used to register the service pool.
+     * @return A {@link Mono} object which contains a {@link ServicePool} element.
+     * This Service Pool will execute each service within the main server thread.
+     */
+    @Contract(pure = true, value = "_, _ -> new")
+    public @NotNull Mono<ServicePool> emptyBukkitServicePool(String poolName, JavaPlugin plugin) {
+        ServicePool pool = new ServicePool(poolName, plugin);
+        servicePools.add(pool);
+        return Mono.just(pool);
+
+    }
+
+    /**
+     * @param poolName The name of the service pool.
+     * @param plugin   The plugin which will be used to register the service pool.
+     * @param services The services to register within the service pool.
+     * @return A {@link Mono} object which contains a {@link ServicePool} element.
+     * This Service Pool will execute each service within the main server thread.
+     */
+    @Contract(pure = true, value = "_, _, _ -> new")
+    public @NotNull Mono<ServicePool> bukkitServicePool(String poolName, JavaPlugin plugin, IService... services) {
+        ServicePool pool = new ServicePool(poolName, plugin);
+        Flux.fromIterable(Arrays.asList(services)).doOnEach(s -> pool.addService(s.get()));
+        servicePools.add(pool);
         return Mono.just(pool);
     }
 

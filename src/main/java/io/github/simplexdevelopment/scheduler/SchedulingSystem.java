@@ -1,3 +1,28 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2022 SimplexDevelopment
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *
+ */
+
 package io.github.simplexdevelopment.scheduler;
 
 import io.github.simplexdevelopment.api.ISchedule;
@@ -7,8 +32,25 @@ import org.bukkit.scheduler.BukkitScheduler;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import reactor.core.Disposable;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+/**
+ * This class is used to manage the scheduling of {@link IService}s,
+ * and the creation of {@link ServicePool}s through the {@link ServiceManager}.
+ * The {@link ServiceManager} should be used to create new {@link ServicePool}s on
+ * initialization of your plugin, and your {@link IService}s should be registered in the
+ * {@link JavaPlugin#onEnable()} method. You can then use the {@link #queue(IService)} method
+ * to then queue up your services, or call {@link #queueAll()} to queue up all services in every pool.
+ * {@link #forceStart(IService)} and {@link #forceStop(IService)} will forcefully start and stop the services, respectively.
+ * {@link #getMainScheduler()} gets the main scheduler for the scheduling system, which is a {@link ReactorBukkitScheduler} object.
+ *
+ * @param <T> Your plugin class, which extends {@link JavaPlugin}.
+ * @author SimplexDevelopment
+ * @see ServiceManager
+ * @see ServicePool
+ * @see ReactorBukkitScheduler
+ */
 public final class SchedulingSystem<T extends JavaPlugin> implements ISchedule {
     /**
      * A denominator to use when registering default service pool names.
@@ -50,6 +92,12 @@ public final class SchedulingSystem<T extends JavaPlugin> implements ISchedule {
         return getServiceManager()
                 .flatMap(manager -> manager.getAssociatedServicePool(service))
                 .flatMap(pool -> pool.queueService(service));
+    }
+
+    public Flux<Disposable> queueAll() {
+        return getServiceManager()
+                .flatMapMany(ServiceManager::getServicePools)
+                .flatMap(ServicePool::queueServices);
     }
 
     @Override
