@@ -95,12 +95,29 @@
      scheduler.getServiceManager().subscribe(manager -> {
          manager.emptyBukkitServicePool("pool_name", this).subscribe(pool -> {
              Set<Disposable> dispos = new HashSet<>();
+ 
              firstService = new YourFirstService(pool, "first_service_name");
              secondService = new YourSecondService(pool, "second_service_name", 20 * 60L);
              thirdService = new YourThirdService(pool, "third_service_name", 20 * 60L, 20 * 60 * 10L, true, false);
+ 
              scheduler.queue(firstService).subscribe(dispos::add);
              scheduler.queue(secondService).subscribe(dispos::add);
              scheduler.queue(thirdService).subscribe(dispos::add);
+ 
+             disposables = Flux.fromIterable(dispos);
          });
      });
+ }
+ ```
+
+ You can then stop, cancel, and/or dispose of the tasks in your `JavaPlugin#onDisable()` method by calling:
+ ```Java
+ @Override
+ public void onDisable() {
+     scheduler.getServiceManager().subscribe(manager -> {
+         manager.getServicePools().doOnEach(signal -> Objects.requireNonNull(signal.get())
+                    .stopServices(disposables)
+                    .subscribe());
+     });
+ }
  ```
