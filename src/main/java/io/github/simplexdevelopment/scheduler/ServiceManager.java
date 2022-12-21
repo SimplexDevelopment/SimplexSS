@@ -33,6 +33,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -132,16 +133,35 @@ public final class ServiceManager {
     }
 
     /**
+     * Adds a service to an existing service pool.
+     *
      * @param pool     The service pool to add to.
      * @param services The services to register within the service pool.
      * @return A {@link Mono} object which contains the {@link ServicePool} element that now contains the registered services.
      */
     @Contract("_, _ -> new")
-    public @NotNull Mono<ServicePool> addToExistingPool(@NotNull ServicePool pool, IService... services) {
-        Flux.fromIterable(Arrays.asList(services)).doOnEach(s -> {
-            pool.addService(s.get());
+    public @NotNull Mono<ServicePool> addToExistingPool(@NotNull String poolName, IService... services) {
+        return Mono.create(sink -> {
+            final ServicePool[] servicePool = new ServicePool[1];
+            findPool(poolName).subscribe(pool -> {
+                if (pool == null) throw new ServicePoolException("There is no pool currently registered with that name.");
+                servicePool[0] = pool;
+            });
+            List<IService> serviceList = Arrays.asList(services);
+            Flux.fromIterable(serviceList).doOnEach(s -> servicePool[0].addService(s.get()));
+            sink.success(servicePool[0]);
         });
-        return Mono.just(pool);
+    }
+
+    /**
+     * Finds a {@link ServicePool} within the ServiceManager's pool list.
+     *
+     * @param poolName The name of the pool.
+     * @return A Mono object which holds the requested ServicePool, or an empty Mono if the pool does not exist.
+     */
+    @Contract()
+    public @NotNull Mono<ServicePool> findPool(String poolName) {
+        return getServicePools().filter(pool -> pool.getName().equalsIgnoreCase(poolName)).next();
     }
 
     /**
